@@ -8,16 +8,15 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func Test_name(t *testing.T) {
+func Test_CreatePackageOk(t *testing.T) {
 	a := assert.New(t)
 
-	command := "new"
-	pack_name := "new_package"
+	command := []string{"gootstrap", "new", "new_package"}
 
 	w := &bytes.Buffer{}
 
-	run(command, pack_name, w)
-	defer os.RemoveAll(pack_name)
+	run(command, w)
+	defer os.RemoveAll(command[2])
 
 	res := w.String()
 
@@ -26,4 +25,40 @@ func Test_name(t *testing.T) {
 	a.Contains(res, "===> Creating main .go file")
 	a.Contains(res, "===> Creating doc.go file")
 	a.Contains(res, "===> Package created! cd new_package to access.")
+}
+
+func Test_WithOneArg(t *testing.T) {
+	a := assert.New(t)
+
+	command := []string{"gootstrap"}
+
+	w := &bytes.Buffer{}
+	run(command, w)
+	res := w.String()
+
+	a.Contains(res, "===> Not enough arguments. Try goootstrap new project_name")
+}
+
+func Test_WithTwoArgs(t *testing.T) {
+	a := assert.New(t)
+
+	command := []string{"gootstrap", "new"}
+
+	w := &bytes.Buffer{}
+	run(command, w)
+	res := w.String()
+
+	a.Contains(res, "===> You should set the name of your package. Try goootstrap new project_name")
+}
+
+func Test_WithThreeArgsCommandNotOk(t *testing.T) {
+	a := assert.New(t)
+
+	command := []string{"gootstrap", "fizz", "buzz"}
+
+	w := &bytes.Buffer{}
+	run(command, w)
+	res := w.String()
+
+	a.Contains(res, "===> Command fizz unknown. Try typing the command 'new' instead.")
 }
