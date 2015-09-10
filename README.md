@@ -12,7 +12,7 @@ $ go get github.com/hgsigner/gootstrap
 After installing, you can use **gootstrap new package_name** to create a new project.
 
 ```bash
-$ $GOPATH/bin/goostrap new project_name
+$ goostrap new project_name
 2015/09/10 00:06:36 Creating package project_name
 2015/09/10 00:06:36 Creating directory
 2015/09/10 00:06:36 Creating README.md
@@ -21,6 +21,9 @@ $ $GOPATH/bin/goostrap new project_name
 2015/09/10 00:06:36 Package created! cd project_name to access.
 $ cd project_name
 ```
+
+If the command goostrap does not work for you, use "$GOPATH/bin/goostrap new project_name" instead.
+
 ###Tree
 ```
 |-- project_name
