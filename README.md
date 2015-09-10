@@ -34,7 +34,7 @@ If the command goostrap does not work for you, use "$GOPATH/bin/goostrap new pro
     |-- doc.go
 ```
 
-I know that there are tons of things I could do to make it better, but, for now, it meets my needs. I be improving it.
+I know that there are tons of things I could do to make it better, but, for now, it meets my needs. I'll be improving it.
 - - -
 ##Licensing
 You can use or modify it to meet your needs.
