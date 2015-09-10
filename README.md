@@ -13,12 +13,13 @@ After installing, you can use **gootstrap new package_name** to create a new pro
 
 ```bash
 $ goostrap new project_name
-2015/09/10 00:06:36 Creating package project_name
-2015/09/10 00:06:36 Creating directory
-2015/09/10 00:06:36 Creating README.md
-2015/09/10 00:06:36 Creating main .go file.
-2015/09/10 00:06:36 Creating doc.go
-2015/09/10 00:06:36 Package created! cd project_name to access.
+===> Creating package project_name
+===> Creating directory
+===> Creating .gitignore file
+===> Creating README.md
+===> Creating main .go file
+===> Creating doc.go file
+===> Package created! cd project_name to access.
 $ cd project_name
 ```
 
@@ -27,6 +28,7 @@ If the command goostrap does not work for you, use "$GOPATH/bin/goostrap new pro
 ###Tree
 ```
 |-- project_name
+    |-- .gitignore
     |-- REAMDE.md
     |-- project_name.go
     |-- doc.go

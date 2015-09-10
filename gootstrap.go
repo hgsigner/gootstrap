@@ -9,24 +9,6 @@ import (
 	"path/filepath"
 )
 
-var readmeTempl = `#%s
-
-This is the awesome description for %s.`
-
-var docTempl = `// Add some documentation to your package.
-package %s`
-
-var mainTempl = `package main
-
-import (
-	"fmt"
-)
-
-func main() {
-	fmt.Prinln("Hello from Gootstrap!")
-}
-`
-
 func run(command, pack_name string, out io.Writer) {
 	switch command {
 	case "new":
@@ -43,6 +25,7 @@ func main() {
 
 }
 
+//It creates the package with files in it
 func createPackage(pack_name string, out io.Writer) {
 	sep := string(filepath.Separator)
 
@@ -52,6 +35,16 @@ func createPackage(pack_name string, out io.Writer) {
 		os.Mkdir(pack_name, 0777)
 		fmt.Fprintf(out, "===> Creating directory")
 	}
+
+	//Creates .gitignore
+	gitignore := fmt.Sprintf("%s%s.gitignore", pack_name, sep)
+	gitignore_file, err := os.Create(gitignore)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	defer gitignore_file.Close()
+	fmt.Fprintf(out, "===> Creating .gitignore file")
 
 	//Creates README.md
 	readme := fmt.Sprintf("%s%sREADME.md", pack_name, sep)
@@ -63,7 +56,7 @@ func createPackage(pack_name string, out io.Writer) {
 	defer readme_file.Close()
 	fReadme := fmt.Sprintf(readmeTempl, pack_name, pack_name)
 	readme_file.WriteString(fReadme)
-	fmt.Fprintf(out, "===> Creating README.md")
+	fmt.Fprintf(out, "===> Creating README.md file")
 
 	// Creates main .go file
 	mainpack := fmt.Sprintf("%s%s%s.go", pack_name, sep, pack_name)
@@ -74,7 +67,7 @@ func createPackage(pack_name string, out io.Writer) {
 	}
 	defer mainpack_file.Close()
 	mainpack_file.WriteString(mainTempl)
-	fmt.Fprintf(out, "===> Creating main .go file.")
+	fmt.Fprintf(out, "===> Creating main .go file")
 
 	// Creates main doc.go file
 	doc := fmt.Sprintf("%s%sdoc.go", pack_name, sep)
@@ -86,5 +79,5 @@ func createPackage(pack_name string, out io.Writer) {
 	defer doc_file.Close()
 	dReadme := fmt.Sprintf(docTempl, pack_name)
 	doc_file.WriteString(dReadme)
-	fmt.Fprintf(out, "===> Creating doc.go")
+	fmt.Fprintf(out, "===> Creating doc.go file")
 }
