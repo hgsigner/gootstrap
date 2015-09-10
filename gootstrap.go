@@ -19,9 +19,11 @@ func run(command, pack_name string, out io.Writer) {
 
 func main() {
 
+	command_name := os.Args[1]
 	pack_name := os.Args[2]
+
 	log.Printf("===> Creating package %s", pack_name)
-	run(os.Args[1], os.Args[2], os.Stdout)
+	run(command_name, pack_name, os.Stdout)
 
 }
 
