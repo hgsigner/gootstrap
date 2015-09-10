@@ -1,0 +1,1 @@
+#Gootstrap is a simple Go package bootstrapper.
