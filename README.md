@@ -1,6 +1,6 @@
 #Gootstrap
 
-Gootstrap is a simple package that bootstrap new Go packages. It creates a REAME.md, a doc.go and main (package name).go file as a placeholder. I did it because I was repeating myself a lot when starting new projects.
+Gootstrap is a simple package that bootstraps new Go packages. I've created it because I was repeating myself a lot when starting new projects.
 
 ##Installing
 
