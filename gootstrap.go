@@ -57,7 +57,7 @@ func createPackage(pack_name string, out io.Writer) {
 
 	gitignoreFile := gFile{
 		fileName:  fmt.Sprintf("%s%s.gitignore", pack_name, sep),
-		okMessage: "===> Creating .gitignore file\n",
+		okMessage: "===> Creating .gitignore file",
 	}
 	err := createFile(gitignoreFile, out)
 	if err != nil {
@@ -70,7 +70,7 @@ func createPackage(pack_name string, out io.Writer) {
 	readmeFile := gFile{
 		fileName:  fmt.Sprintf("%s%sREADME.md", pack_name, sep),
 		template:  fmt.Sprintf(readmeTempl, pack_name, pack_name),
-		okMessage: "===> Creating README.md file\n",
+		okMessage: "===> Creating README.md file",
 	}
 	err = createFile(readmeFile, out)
 	if err != nil {
@@ -83,7 +83,7 @@ func createPackage(pack_name string, out io.Writer) {
 	mainFile := gFile{
 		fileName:  fmt.Sprintf("%s%s%s.go", pack_name, sep, pack_name),
 		template:  mainTempl,
-		okMessage: fmt.Sprintf("===> Creating %s.go file\n", pack_name),
+		okMessage: fmt.Sprintf("===> Creating %s.go file", pack_name),
 	}
 	err = createFile(mainFile, out)
 	if err != nil {
@@ -96,7 +96,7 @@ func createPackage(pack_name string, out io.Writer) {
 	mainTestFile := gFile{
 		fileName:  fmt.Sprintf("%s%s%s_test.go", pack_name, sep, pack_name),
 		template:  mainTestTempl,
-		okMessage: fmt.Sprintf("===> Creating %s_test.go file\n", pack_name),
+		okMessage: fmt.Sprintf("===> Creating %s_test.go file", pack_name),
 	}
 	err = createFile(mainTestFile, out)
 	if err != nil {
@@ -107,7 +107,7 @@ func createPackage(pack_name string, out io.Writer) {
 	doctFile := gFile{
 		fileName:  fmt.Sprintf("%s%sdoc.go", pack_name, sep),
 		template:  fmt.Sprintf(docTempl, pack_name),
-		okMessage: "===> Creating doc.go file\n",
+		okMessage: "===> Creating doc.go file",
 	}
 	err = createFile(doctFile, out)
 	if err != nil {

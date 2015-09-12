@@ -2,6 +2,7 @@ package main
 
 import (
 	"bytes"
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -15,7 +16,7 @@ func Test_CreatePackageOk(t *testing.T) {
 	w := &bytes.Buffer{}
 
 	run(command, w)
-	//defer os.RemoveAll(command[2])
+	defer os.RemoveAll(command[2])
 
 	res := w.String()
 
