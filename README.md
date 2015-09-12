@@ -32,6 +32,7 @@ If the command goostrap does not work for you, use "$GOPATH/bin/goostrap new pro
     |-- .gitignore
     |-- REAMDE.md
     |-- project_name.go
+    |-- project_name_test.go
     |-- doc.go
 ```
 
