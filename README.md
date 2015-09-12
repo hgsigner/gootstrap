@@ -17,7 +17,8 @@ $ goostrap new project_name
 ===> Creating directory
 ===> Creating .gitignore file
 ===> Creating README.md
-===> Creating main .go file
+===> Creating project_name.go file
+===> Creating project_name_test.go file
 ===> Creating doc.go file
 ===> Package created! cd project_name to access.
 $ cd project_name

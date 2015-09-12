@@ -2,7 +2,6 @@ package main
 
 import (
 	"bytes"
-	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -16,13 +15,14 @@ func Test_CreatePackageOk(t *testing.T) {
 	w := &bytes.Buffer{}
 
 	run(command, w)
-	defer os.RemoveAll(command[2])
+	//defer os.RemoveAll(command[2])
 
 	res := w.String()
 
 	a.Contains(res, "===> Creating .gitignore file")
 	a.Contains(res, "===> Creating README.md file")
-	a.Contains(res, "===> Creating main .go file")
+	a.Contains(res, "===> Creating new_package.go file")
+	a.Contains(res, "===> Creating new_package_test.go file")
 	a.Contains(res, "===> Creating doc.go file")
 	a.Contains(res, "===> Package created! cd new_package to access.")
 }
