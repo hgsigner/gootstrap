@@ -65,6 +65,19 @@ func createPackage(pack_name string, out io.Writer) {
 		os.Exit(1)
 	}
 
+	//Creates .travis.yml
+
+	travisFile := gFile{
+		fileName:  fmt.Sprintf("%s%s.travis.yml", pack_name, sep),
+		template:  travisTempl,
+		okMessage: "===> Creating .travis.yml file",
+	}
+	err = createFile(travisFile, out)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
 	//Creates README.md
 
 	readmeFile := gFile{

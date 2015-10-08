@@ -21,6 +21,7 @@ func Test_CreatePackageOk(t *testing.T) {
 	res := w.String()
 
 	a.Contains(res, "===> Creating .gitignore file")
+	a.Contains(res, "===> Creating .travis.yml file")
 	a.Contains(res, "===> Creating README.md file")
 	a.Contains(res, "===> Creating new_package.go file")
 	a.Contains(res, "===> Creating new_package_test.go file")

@@ -35,3 +35,16 @@ func Test(t *testing.T) {
 	
 }
 `
+
+var travisTempl = `language: go
+sudo: false
+
+go:
+  - 1.3
+  - 1.4
+  - 1.5
+  - tip
+
+script:
+  - go test -v ./...
+`
