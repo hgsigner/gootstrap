@@ -29,12 +29,16 @@ func (gf gootFile) isMinimalFile() bool {
 // passed on the gootstrap file
 func (gf gootFile) createFile() error {
 
+	// Creates the file and defer the its closing
 	fileCreate, err := os.Create(gf.fileName)
 	if err != nil {
 		return err
 	}
 	defer fileCreate.Close()
 
+	// Test is the current file has any template
+	// attached to it and,then, writes the output
+	// to os.Stdout.
 	if gf.template != "" {
 		fileCreate.WriteString(gf.template)
 	}
@@ -43,10 +47,12 @@ func (gf gootFile) createFile() error {
 	return nil
 }
 
-// Perform creation based on the subcommand passed
-
+// Performs creation based on the subcommand passed
 func (gf gootFile) performCreation() error {
 
+	// Checks if the subcommand is either ""
+	// or --minimal in order to perform the
+	// creation on the correct files.
 	switch gf.subcommand {
 	case "":
 		err := gf.createFile()

@@ -30,6 +30,9 @@ func run(args []string, out io.Writer) {
 // Runs to program based on the command passed.
 func runCommand(args []string, out io.Writer) {
 
+	// Inits the command and the pack_name vars and
+	// tests if there is any subcommand passed as
+	// argument.
 	command := args[1]
 	pack_name := args[2]
 	subcommand, isSubcKnown := func(args []string) (string, bool) {
@@ -46,6 +49,8 @@ func runCommand(args []string, out io.Writer) {
 
 	switch command {
 	case "new":
+		// If the subcommand is known, it will
+		// pass it along, if not, it will print an error message.
 		if !isSubcKnown {
 			fmt.Fprintf(out, "===> Subcommand %s unknown. Try typing one included in following list instead: %s\n", subcommand, strings.Join(knownSubcommands, ", "))
 		} else {
