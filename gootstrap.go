@@ -72,120 +72,73 @@ func createPackage(pack_name, subcommand string, out io.Writer) {
 	sep := string(filepath.Separator)
 
 	// Creates the project's folder
-
 	if _, err := os.Stat(pack_name); os.IsNotExist(err) {
 		os.Mkdir(pack_name, 0777)
 		fmt.Fprintf(out, "===> Creating directory\n")
 	}
 
-	// Creates .gitignore
-
-	gitignoreFile := gootFile{
-		anchor:     "gitignore",
-		fileName:   fmt.Sprintf("%s%s.gitignore", pack_name, sep),
-		okMessage:  "===> Creating .gitignore file",
-		output:     out,
-		subcommand: subcommand,
-	}
-	err := gitignoreFile.performCreation()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-
-	// Creates .travis.yml
-
-	travisFile := gootFile{
-		anchor:     "travis",
-		fileName:   fmt.Sprintf("%s%s.travis.yml", pack_name, sep),
-		template:   travisTempl,
-		okMessage:  "===> Creating .travis.yml file",
-		output:     out,
-		subcommand: subcommand,
-	}
-	err = travisFile.performCreation()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-
-	// Creates LISENCE.txt
-
+	// Init files
 	cuurentYear, _, _ := time.Now().Date()
 	user, _ := user.Current()
-	licenseFile := gootFile{
-		anchor:     "license",
-		fileName:   fmt.Sprintf("%s%sLICENSE.txt", pack_name, sep),
-		template:   fmt.Sprintf(mitLicenseTempl, cuurentYear, user.Name),
-		okMessage:  "===> Creating LICENSE.txt file",
-		output:     out,
-		subcommand: subcommand,
-	}
-	err = licenseFile.performCreation()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-
-	// Creates README.md
-
-	readmeFile := gootFile{
-		anchor:     "readme",
-		fileName:   fmt.Sprintf("%s%sREADME.md", pack_name, sep),
-		template:   fmt.Sprintf(readmeTempl, pack_name, pack_name),
-		okMessage:  "===> Creating README.md file",
-		output:     out,
-		subcommand: subcommand,
-	}
-	err = readmeFile.performCreation()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-
-	// Creates main .go file
-
-	mainFile := gootFile{
-		anchor:     "main",
-		fileName:   fmt.Sprintf("%s%s%s.go", pack_name, sep, pack_name),
-		template:   mainTempl,
-		okMessage:  fmt.Sprintf("===> Creating %s.go file", pack_name),
-		output:     out,
-		subcommand: subcommand,
-	}
-	err = mainFile.performCreation()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
-	}
-
-	// Creates main _test.go file
-
-	mainTestFile := gootFile{
-		anchor:     "test",
-		fileName:   fmt.Sprintf("%s%s%s_test.go", pack_name, sep, pack_name),
-		template:   mainTestTempl,
-		okMessage:  fmt.Sprintf("===> Creating %s_test.go file", pack_name),
-		output:     out,
-		subcommand: subcommand,
-	}
-	err = mainTestFile.performCreation()
-	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+	files := filesList{
+		{
+			anchor:     "gitignore",
+			fileName:   fmt.Sprintf("%s%s.gitignore", pack_name, sep),
+			okMessage:  "===> Creating .gitignore file",
+			output:     out,
+			subcommand: subcommand,
+		},
+		{
+			anchor:     "travis",
+			fileName:   fmt.Sprintf("%s%s.travis.yml", pack_name, sep),
+			template:   travisTempl,
+			okMessage:  "===> Creating .travis.yml file",
+			output:     out,
+			subcommand: subcommand,
+		},
+		{
+			anchor:     "license",
+			fileName:   fmt.Sprintf("%s%sLICENSE.txt", pack_name, sep),
+			template:   fmt.Sprintf(mitLicenseTempl, cuurentYear, user.Name),
+			okMessage:  "===> Creating LICENSE.txt file",
+			output:     out,
+			subcommand: subcommand,
+		},
+		{
+			anchor:     "readme",
+			fileName:   fmt.Sprintf("%s%sREADME.md", pack_name, sep),
+			template:   fmt.Sprintf(readmeTempl, pack_name, pack_name),
+			okMessage:  "===> Creating README.md file",
+			output:     out,
+			subcommand: subcommand,
+		},
+		{
+			anchor:     "main",
+			fileName:   fmt.Sprintf("%s%s%s.go", pack_name, sep, pack_name),
+			template:   mainTempl,
+			okMessage:  fmt.Sprintf("===> Creating %s.go file", pack_name),
+			output:     out,
+			subcommand: subcommand,
+		},
+		{
+			anchor:     "test",
+			fileName:   fmt.Sprintf("%s%s%s_test.go", pack_name, sep, pack_name),
+			template:   mainTestTempl,
+			okMessage:  fmt.Sprintf("===> Creating %s_test.go file", pack_name),
+			output:     out,
+			subcommand: subcommand,
+		},
+		{
+			anchor:     "doc",
+			fileName:   fmt.Sprintf("%s%sdoc.go", pack_name, sep),
+			template:   docTempl,
+			okMessage:  "===> Creating doc.go file",
+			output:     out,
+			subcommand: subcommand,
+		},
 	}
 
-	// Creates doc.go file
-
-	doctFile := gootFile{
-		anchor:     "doc",
-		fileName:   fmt.Sprintf("%s%sdoc.go", pack_name, sep),
-		template:   docTempl,
-		okMessage:  "===> Creating doc.go file",
-		output:     out,
-		subcommand: subcommand,
-	}
-	err = doctFile.performCreation()
+	err := files.Process()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)

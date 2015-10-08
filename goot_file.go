@@ -14,6 +14,18 @@ type gootFile struct {
 	output                          io.Writer
 }
 
+type filesList []gootFile
+
+func (fl filesList) Process() error {
+	for _, file := range fl {
+		err := file.performCreation()
+		if err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // Checks if a given file is part of the mininmal
 // version of the package.
 func (gf gootFile) isMinimalFile() bool {
