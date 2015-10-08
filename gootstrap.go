@@ -5,12 +5,10 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"os/user"
 	"path/filepath"
+	"time"
 )
-
-type gFile struct {
-	packName, fileName, template, okMessage string
-}
 
 //It runs the program.
 func run(args []string, out io.Writer) {
@@ -55,11 +53,12 @@ func createPackage(pack_name string, out io.Writer) {
 
 	//Creates .gitignore
 
-	gitignoreFile := gFile{
+	gitignoreFile := gootFile{
 		fileName:  fmt.Sprintf("%s%s.gitignore", pack_name, sep),
 		okMessage: "===> Creating .gitignore file",
+		output:    out,
 	}
-	err := createFile(gitignoreFile, out)
+	err := gitignoreFile.createFile()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -67,12 +66,29 @@ func createPackage(pack_name string, out io.Writer) {
 
 	//Creates .travis.yml
 
-	travisFile := gFile{
+	travisFile := gootFile{
 		fileName:  fmt.Sprintf("%s%s.travis.yml", pack_name, sep),
 		template:  travisTempl,
 		okMessage: "===> Creating .travis.yml file",
+		output:    out,
 	}
-	err = createFile(travisFile, out)
+	err = travisFile.createFile()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	//Creates LISENCE.txt
+
+	cuurentYear, _, _ := time.Now().Date()
+	user, _ := user.Current()
+	licenseFile := gootFile{
+		fileName:  fmt.Sprintf("%s%sLICENSE.txt", pack_name, sep),
+		template:  fmt.Sprintf(mitLicenseTempl, cuurentYear, user.Name),
+		okMessage: "===> Creating LICENSE.txt file",
+		output:    out,
+	}
+	err = licenseFile.createFile()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -80,12 +96,13 @@ func createPackage(pack_name string, out io.Writer) {
 
 	//Creates README.md
 
-	readmeFile := gFile{
+	readmeFile := gootFile{
 		fileName:  fmt.Sprintf("%s%sREADME.md", pack_name, sep),
 		template:  fmt.Sprintf(readmeTempl, pack_name, pack_name),
 		okMessage: "===> Creating README.md file",
+		output:    out,
 	}
-	err = createFile(readmeFile, out)
+	err = readmeFile.createFile()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -93,12 +110,13 @@ func createPackage(pack_name string, out io.Writer) {
 
 	// Creates main .go file
 
-	mainFile := gFile{
+	mainFile := gootFile{
 		fileName:  fmt.Sprintf("%s%s%s.go", pack_name, sep, pack_name),
 		template:  mainTempl,
 		okMessage: fmt.Sprintf("===> Creating %s.go file", pack_name),
+		output:    out,
 	}
-	err = createFile(mainFile, out)
+	err = mainFile.createFile()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -106,42 +124,27 @@ func createPackage(pack_name string, out io.Writer) {
 
 	// Creates main _test.go file
 
-	mainTestFile := gFile{
+	mainTestFile := gootFile{
 		fileName:  fmt.Sprintf("%s%s%s_test.go", pack_name, sep, pack_name),
 		template:  mainTestTempl,
 		okMessage: fmt.Sprintf("===> Creating %s_test.go file", pack_name),
+		output:    out,
 	}
-	err = createFile(mainTestFile, out)
+	err = mainTestFile.createFile()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
-	doctFile := gFile{
+	doctFile := gootFile{
 		fileName:  fmt.Sprintf("%s%sdoc.go", pack_name, sep),
-		template:  fmt.Sprintf(docTempl, pack_name),
+		template:  docTempl,
 		okMessage: "===> Creating doc.go file",
+		output:    out,
 	}
-	err = createFile(doctFile, out)
+	err = doctFile.createFile()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
-}
-
-func createFile(file gFile, out io.Writer) error {
-	fileCreate, err := os.Create(file.fileName)
-
-	if err != nil {
-		return err
-	}
-	defer fileCreate.Close()
-
-	if file.template != "" {
-		fileCreate.WriteString(file.template)
-	}
-
-	fmt.Fprintln(out, file.okMessage)
-
-	return nil
 }

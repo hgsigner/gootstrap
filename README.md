@@ -16,7 +16,9 @@ $ goostrap new project_name
 ===> Creating package project_name
 ===> Creating directory
 ===> Creating .gitignore file
+===> Creating .travis.yml file
 ===> Creating README.md
+===> Creating LICENSE.txt file
 ===> Creating project_name.go file
 ===> Creating project_name_test.go file
 ===> Creating doc.go file
