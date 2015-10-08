@@ -7,10 +7,13 @@ import (
 	"os"
 	"os/user"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
-//It runs the program.
+var knownSubcommands = []string{"--minimal"}
+
+// Runs the program.
 func run(args []string, out io.Writer) {
 	switch len(args) {
 	case 1:
@@ -20,17 +23,36 @@ func run(args []string, out io.Writer) {
 		fmt.Fprintln(out, "===> You should set the name of your package. Try goootstrap new project_name\n")
 		return
 	default:
-		runCommand(args[1], args[2], out)
+		runCommand(args, out)
 	}
 }
 
-//It runs to program based on the command passed.
-func runCommand(command, pack_name string, out io.Writer) {
+// Runs to program based on the command passed.
+func runCommand(args []string, out io.Writer) {
+
+	command := args[1]
+	pack_name := args[2]
+	subcommand, isSubcKnown := func(args []string) (string, bool) {
+		if len(args) > 3 {
+			for _, value := range knownSubcommands {
+				if args[3] == value {
+					return args[3], true
+				}
+			}
+			return args[3], false
+		}
+		return "", true
+	}(args)
+
 	switch command {
 	case "new":
-		fmt.Fprintf(out, "===> Creating package %s\n", pack_name)
-		createPackage(pack_name, out)
-		fmt.Fprintf(out, "===> Package created! cd %s to access.\n", pack_name)
+		if !isSubcKnown {
+			fmt.Fprintf(out, "===> Subcommand %s unknown. Try typing one included in following list instead: %s\n", subcommand, strings.Join(knownSubcommands, ", "))
+		} else {
+			fmt.Fprintf(out, "===> Creating package %s\n", pack_name)
+			createPackage(pack_name, subcommand, out)
+			fmt.Fprintf(out, "===> Package created! cd %s to access.\n", pack_name)
+		}
 	default:
 		fmt.Fprintf(out, "===> Command %s unknown. Try typing the command 'new' instead.\n", command)
 	}
@@ -40,8 +62,8 @@ func main() {
 	run(os.Args, os.Stdout)
 }
 
-//It creates the package with files in it
-func createPackage(pack_name string, out io.Writer) {
+// Creates the package with files in it
+func createPackage(pack_name, subcommand string, out io.Writer) {
 	sep := string(filepath.Separator)
 
 	// Creates the project's folder
@@ -51,58 +73,66 @@ func createPackage(pack_name string, out io.Writer) {
 		fmt.Fprintf(out, "===> Creating directory\n")
 	}
 
-	//Creates .gitignore
+	// Creates .gitignore
 
 	gitignoreFile := gootFile{
-		fileName:  fmt.Sprintf("%s%s.gitignore", pack_name, sep),
-		okMessage: "===> Creating .gitignore file",
-		output:    out,
+		anchor:     "gitignore",
+		fileName:   fmt.Sprintf("%s%s.gitignore", pack_name, sep),
+		okMessage:  "===> Creating .gitignore file",
+		output:     out,
+		subcommand: subcommand,
 	}
-	err := gitignoreFile.createFile()
+	err := gitignoreFile.performCreation()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
-	//Creates .travis.yml
+	// Creates .travis.yml
 
 	travisFile := gootFile{
-		fileName:  fmt.Sprintf("%s%s.travis.yml", pack_name, sep),
-		template:  travisTempl,
-		okMessage: "===> Creating .travis.yml file",
-		output:    out,
+		anchor:     "travis",
+		fileName:   fmt.Sprintf("%s%s.travis.yml", pack_name, sep),
+		template:   travisTempl,
+		okMessage:  "===> Creating .travis.yml file",
+		output:     out,
+		subcommand: subcommand,
 	}
-	err = travisFile.createFile()
+	err = travisFile.performCreation()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
-	//Creates LISENCE.txt
+	// Creates LISENCE.txt
 
 	cuurentYear, _, _ := time.Now().Date()
 	user, _ := user.Current()
 	licenseFile := gootFile{
-		fileName:  fmt.Sprintf("%s%sLICENSE.txt", pack_name, sep),
-		template:  fmt.Sprintf(mitLicenseTempl, cuurentYear, user.Name),
-		okMessage: "===> Creating LICENSE.txt file",
-		output:    out,
+		anchor:     "license",
+		fileName:   fmt.Sprintf("%s%sLICENSE.txt", pack_name, sep),
+		template:   fmt.Sprintf(mitLicenseTempl, cuurentYear, user.Name),
+		okMessage:  "===> Creating LICENSE.txt file",
+		output:     out,
+		subcommand: subcommand,
 	}
-	err = licenseFile.createFile()
+	err = licenseFile.performCreation()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
-	//Creates README.md
+	// Creates README.md
 
 	readmeFile := gootFile{
-		fileName:  fmt.Sprintf("%s%sREADME.md", pack_name, sep),
-		template:  fmt.Sprintf(readmeTempl, pack_name, pack_name),
-		okMessage: "===> Creating README.md file",
-		output:    out,
+		anchor:     "readme",
+		fileName:   fmt.Sprintf("%s%sREADME.md", pack_name, sep),
+		template:   fmt.Sprintf(readmeTempl, pack_name, pack_name),
+		okMessage:  "===> Creating README.md file",
+		output:     out,
+		subcommand: subcommand,
 	}
-	err = readmeFile.createFile()
+	err = readmeFile.performCreation()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -111,12 +141,14 @@ func createPackage(pack_name string, out io.Writer) {
 	// Creates main .go file
 
 	mainFile := gootFile{
-		fileName:  fmt.Sprintf("%s%s%s.go", pack_name, sep, pack_name),
-		template:  mainTempl,
-		okMessage: fmt.Sprintf("===> Creating %s.go file", pack_name),
-		output:    out,
+		anchor:     "main",
+		fileName:   fmt.Sprintf("%s%s%s.go", pack_name, sep, pack_name),
+		template:   mainTempl,
+		okMessage:  fmt.Sprintf("===> Creating %s.go file", pack_name),
+		output:     out,
+		subcommand: subcommand,
 	}
-	err = mainFile.createFile()
+	err = mainFile.performCreation()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
@@ -125,24 +157,30 @@ func createPackage(pack_name string, out io.Writer) {
 	// Creates main _test.go file
 
 	mainTestFile := gootFile{
-		fileName:  fmt.Sprintf("%s%s%s_test.go", pack_name, sep, pack_name),
-		template:  mainTestTempl,
-		okMessage: fmt.Sprintf("===> Creating %s_test.go file", pack_name),
-		output:    out,
+		anchor:     "test",
+		fileName:   fmt.Sprintf("%s%s%s_test.go", pack_name, sep, pack_name),
+		template:   mainTestTempl,
+		okMessage:  fmt.Sprintf("===> Creating %s_test.go file", pack_name),
+		output:     out,
+		subcommand: subcommand,
 	}
-	err = mainTestFile.createFile()
+	err = mainTestFile.performCreation()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
+	// Creates doc.go file
+
 	doctFile := gootFile{
-		fileName:  fmt.Sprintf("%s%sdoc.go", pack_name, sep),
-		template:  docTempl,
-		okMessage: "===> Creating doc.go file",
-		output:    out,
+		anchor:     "doc",
+		fileName:   fmt.Sprintf("%s%sdoc.go", pack_name, sep),
+		template:   docTempl,
+		okMessage:  "===> Creating doc.go file",
+		output:     out,
+		subcommand: subcommand,
 	}
-	err = doctFile.createFile()
+	err = doctFile.performCreation()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
