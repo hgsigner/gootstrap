@@ -65,4 +65,4 @@ $ cd project_name
 I know that there are tons of things I could do to make it better, but, for now, it meets my needs. I'll be improving it.
 - - -
 ##Licensing
-You can use or modify it to meet your needs.
+This package is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).

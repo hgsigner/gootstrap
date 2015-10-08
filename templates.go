@@ -7,7 +7,7 @@ This is the awesome description for %s.
 
 ## License
 
-The package is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).`
+This package is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).`
 
 //doc.go template
 var docTempl = `// Add some documentation to your package.
