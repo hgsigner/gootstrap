@@ -40,7 +40,7 @@ If the command goostrap does not work for you, use "$GOPATH/bin/goostrap new pro
     |-- doc.go
 ```
 
-In order to create a minimal package structure, pass the `--minimal` arguments after the package name:
+In order to create a minimal package structure, pass the `--minimal` argument after the package name:
 
 ```bash
 $ goostrap new project_name --minimal
