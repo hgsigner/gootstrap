@@ -29,7 +29,7 @@ func (gf gootFile) isMinimalFile() bool {
 // passed on the gootstrap file
 func (gf gootFile) createFile() error {
 
-	// Creates the file and defer the its closing
+	// Creates the file and defer its closing
 	fileCreate, err := os.Create(gf.fileName)
 	if err != nil {
 		return err
