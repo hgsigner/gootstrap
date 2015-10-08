@@ -32,12 +32,36 @@ If the command goostrap does not work for you, use "$GOPATH/bin/goostrap new pro
 ```
 |-- project_name
     |-- .gitignore
+    |-- .travis.yml
     |-- REAMDE.md
+    |-- LICENSE.txt
     |-- project_name.go
     |-- project_name_test.go
     |-- doc.go
 ```
 
+In order to create a minimal package structure, pass the `--minimal` arguments after the package name:
+
+```bash
+$ goostrap new project_name --minimal
+===> Creating package project_name
+===> Creating directory
+===> Creating project_name.go file
+===> Creating project_name_test.go file
+===> Creating doc.go file
+===> Package created! cd project_name to access.
+$ cd project_name
+```
+
+###Tree
+```
+|-- project_name
+    |-- project_name.go
+    |-- project_name_test.go
+    |-- doc.go
+```
+
+- - -
 I know that there are tons of things I could do to make it better, but, for now, it meets my needs. I'll be improving it.
 - - -
 ##Licensing
