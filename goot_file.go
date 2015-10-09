@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"strings"
 )
 
 var minimalPackage = []string{"doc", "main", "test"}
@@ -35,6 +36,20 @@ func (gf gootFile) isMinimalFile() bool {
 		}
 	}
 	return false
+}
+
+// Checks if a given file should be created.
+// This function is called is the user passess
+// the --no-file_name subcommand
+func (gf gootFile) shoudCreateFile() bool {
+	subcNoPrefix := strings.TrimPrefix(strings.TrimPrefix(gf.subcommand, "--no"), "-")
+	subcFiles := strings.Split(subcNoPrefix, "-")
+	for _, file := range subcFiles {
+		if gf.anchor == file {
+			return false
+		}
+	}
+	return true
 }
 
 // Creates the based on the construction
@@ -78,7 +93,20 @@ func (gf gootFile) performCreation() error {
 				return err
 			}
 		}
+	default:
+		// Checks if the subcommand passed is
+		// related to removing files while
+		// creating the package.
+		if matchRemoveFile := findMatch("--no", gf.subcommand); matchRemoveFile != "" {
+			if gf.shoudCreateFile() {
+				err := gf.createFile()
+				if err != nil {
+					return err
+				}
+			}
+		}
 	}
+
 	return nil
 
 }

@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-var knownSubcommands = []string{"--minimal"}
+var knownSubcommands = []string{"--minimal", "--no"}
 
 // Runs the program.
 func run(args []string, out io.Writer) {
@@ -38,7 +38,8 @@ func runCommand(args []string, out io.Writer) {
 	subcommand, isSubcKnown := func(args []string) (string, bool) {
 		if len(args) > 3 {
 			for _, value := range knownSubcommands {
-				if args[3] == value {
+				v := findMatch(value, args[3])
+				if v != "" {
 					return args[3], true
 				}
 			}

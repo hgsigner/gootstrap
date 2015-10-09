@@ -100,3 +100,48 @@ func Test_WithThreeArgsCommandNotOk(t *testing.T) {
 
 	a.Contains(res, "===> Command fizz unknown. Try typing the command 'new' instead.")
 }
+
+func Test_CreatePackageExcludingFileOk(t *testing.T) {
+	a := assert.New(t)
+
+	command := []string{"gootstrap", "new", "new_package", "--no-gitignore-travis"}
+
+	w := &bytes.Buffer{}
+
+	run(command, w)
+	defer os.RemoveAll(command[2])
+
+	res := w.String()
+
+	a.NotContains(res, "===> Creating .gitignore file")
+	a.NotContains(res, "===> Creating .travis.yml file")
+
+	a.Contains(res, "===> Creating README.md file")
+	a.Contains(res, "===> Creating LICENSE.txt file")
+	a.Contains(res, "===> Creating new_package.go file")
+	a.Contains(res, "===> Creating new_package_test.go file")
+	a.Contains(res, "===> Creating doc.go file")
+	a.Contains(res, "===> Package created! cd new_package to access.")
+}
+
+func Test_CreatePackageExcludingFileNotOK(t *testing.T) {
+	a := assert.New(t)
+
+	command := []string{"gootstrap", "new", "new_package", "--no"}
+
+	w := &bytes.Buffer{}
+
+	run(command, w)
+	defer os.RemoveAll(command[2])
+
+	res := w.String()
+
+	a.Contains(res, "===> Creating .gitignore file")
+	a.Contains(res, "===> Creating .travis.yml file")
+	a.Contains(res, "===> Creating README.md file")
+	a.Contains(res, "===> Creating LICENSE.txt file")
+	a.Contains(res, "===> Creating new_package.go file")
+	a.Contains(res, "===> Creating new_package_test.go file")
+	a.Contains(res, "===> Creating doc.go file")
+	a.Contains(res, "===> Package created! cd new_package to access.")
+}
