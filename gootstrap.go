@@ -20,7 +20,7 @@ func run(args []string, out io.Writer) {
 		fmt.Fprintln(out, "===> Not enough arguments. Try goootstrap new project_name")
 		return
 	case 2:
-		fmt.Fprintln(out, "===> You should set the name of your package. Try goootstrap new project_name\n")
+		fmt.Fprintln(out, "===> You should set the name of your package. Try goootstrap new project_name")
 		return
 	default:
 		runCommand(args, out)
@@ -52,7 +52,7 @@ func runCommand(args []string, out io.Writer) {
 		// If the subcommand is known, it will
 		// pass it along, if not, it will print an error message.
 		if !isSubcKnown {
-			fmt.Fprintf(out, "===> Subcommand %s unknown. Try typing one included in following list instead: %s\n", subcommand, strings.Join(knownSubcommands, ", "))
+			fmt.Fprintf(out, "===> Subcommand %s unknown. Try typing one of the following: %s\n", subcommand, strings.Join(knownSubcommands, ", "))
 		} else {
 			fmt.Fprintf(out, "===> Creating package %s\n", pack_name)
 			createPackage(pack_name, subcommand, out)

@@ -62,7 +62,7 @@ func Test_WithWrongSubcommand(t *testing.T) {
 	run(command, w)
 	res := w.String()
 
-	a.Contains(res, "===> Subcommand balala unknown. Try typing one included in following list instead: --minimal")
+	a.Contains(res, "===> Subcommand balala unknown. Try typing one of the following: --minimal")
 }
 
 func Test_WithOneArg(t *testing.T) {
