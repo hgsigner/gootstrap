@@ -61,6 +61,33 @@ $ cd project_name
     |-- doc.go
 ```
 
+If you want the exclude some files while creating the package, you can pass the subcommand `--no-{file names separated by "-"}`:
+
+```bash
+$ goostrap new project_name --no-travis-lisence
+===> Creating package project_name
+===> Creating directory
+===> Creating .gitignore file
+===> Creating README.md
+===> Creating project_name.go file
+===> Creating project_name_test.go file
+===> Creating doc.go file
+===> Package created! cd project_name to access.
+$ cd project_name
+```
+
+###Tree
+```
+|-- project_name
+    |-- .gitignore
+    |-- REAMDE.md
+    |-- project_name.go
+    |-- project_name_test.go
+    |-- doc.go
+```
+
+File names you can pass to `--no-{files separated by "-"}`: `travis, gitignore, license, readme, main, test and doc`
+
 - - -
 I know that there are tons of things I could do to make it better, but, for now, it meets my needs. I'll be improving it.
 - - -
