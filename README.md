@@ -1,6 +1,6 @@
 #Gootstrap [![Build Status](https://travis-ci.org/hgsigner/gonumbers.svg?branch=master)](https://travis-ci.org/hgsigner/gonumbers)
 
-Gootstrap is a simple package that bootstraps new Go packages. I've created it because I was repeating myself a lot when starting new projects.
+Gootstrap is a simple package that bootstraps new Go packages. I've created it because I was repeating myself a lot while starting new projects.
 
 ##Installing
 
