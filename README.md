@@ -64,7 +64,7 @@ $ cd project_name
 If you want the exclude some files while creating the package, you can pass the subcommand `--no-{file names separated by "-"}`:
 
 ```bash
-$ goostrap new project_name --no-travis-lisence
+$ goostrap new project_name --no-travis-license
 ===> Creating package project_name
 ===> Creating directory
 ===> Creating .gitignore file
