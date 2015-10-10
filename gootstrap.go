@@ -9,6 +9,8 @@ import (
 	"path/filepath"
 	"strings"
 	"time"
+
+	"github.com/hgsigner/stringfy"
 )
 
 var knownSubcommands = []string{"--minimal", "--no"}
@@ -79,12 +81,15 @@ func createPackage(pack_name, subcommand string, out io.Writer) {
 	}
 
 	// Init files
+
 	cuurentYear, _, _ := time.Now().Date()
 	user, _ := user.Current()
+
 	files := filesList{
 		{
 			anchor:     "gitignore",
 			fileName:   fmt.Sprintf("%s%s.gitignore", pack_name, sep),
+			template:   GitIgnoreFile{},
 			okMessage:  "===> Creating .gitignore file",
 			output:     out,
 			subcommand: subcommand,
@@ -92,7 +97,7 @@ func createPackage(pack_name, subcommand string, out io.Writer) {
 		{
 			anchor:     "travis",
 			fileName:   fmt.Sprintf("%s%s.travis.yml", pack_name, sep),
-			template:   travisTempl,
+			template:   TravisFile{},
 			okMessage:  "===> Creating .travis.yml file",
 			output:     out,
 			subcommand: subcommand,
@@ -100,7 +105,7 @@ func createPackage(pack_name, subcommand string, out io.Writer) {
 		{
 			anchor:     "license",
 			fileName:   fmt.Sprintf("%s%sLICENSE.txt", pack_name, sep),
-			template:   fmt.Sprintf(mitLicenseTempl, cuurentYear, user.Name),
+			template:   LicenseFile{cuurentYear, user.Name},
 			okMessage:  "===> Creating LICENSE.txt file",
 			output:     out,
 			subcommand: subcommand,
@@ -108,7 +113,7 @@ func createPackage(pack_name, subcommand string, out io.Writer) {
 		{
 			anchor:     "readme",
 			fileName:   fmt.Sprintf("%s%sREADME.md", pack_name, sep),
-			template:   fmt.Sprintf(readmeTempl, pack_name, pack_name),
+			template:   ReadmeFile{stringfy.CamelCase(pack_name), pack_name},
 			okMessage:  "===> Creating README.md file",
 			output:     out,
 			subcommand: subcommand,
@@ -116,7 +121,7 @@ func createPackage(pack_name, subcommand string, out io.Writer) {
 		{
 			anchor:     "main",
 			fileName:   fmt.Sprintf("%s%s%s.go", pack_name, sep, pack_name),
-			template:   mainTempl,
+			template:   MainFile{pack_name},
 			okMessage:  fmt.Sprintf("===> Creating %s.go file", pack_name),
 			output:     out,
 			subcommand: subcommand,
@@ -124,7 +129,7 @@ func createPackage(pack_name, subcommand string, out io.Writer) {
 		{
 			anchor:     "test",
 			fileName:   fmt.Sprintf("%s%s%s_test.go", pack_name, sep, pack_name),
-			template:   mainTestTempl,
+			template:   MainTestFile{pack_name},
 			okMessage:  fmt.Sprintf("===> Creating %s_test.go file", pack_name),
 			output:     out,
 			subcommand: subcommand,
@@ -132,7 +137,7 @@ func createPackage(pack_name, subcommand string, out io.Writer) {
 		{
 			anchor:     "doc",
 			fileName:   fmt.Sprintf("%s%sdoc.go", pack_name, sep),
-			template:   docTempl,
+			template:   DocFile{pack_name},
 			okMessage:  "===> Creating doc.go file",
 			output:     out,
 			subcommand: subcommand,

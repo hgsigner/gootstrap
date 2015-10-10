@@ -1,73 +1,100 @@
 package main
 
+import (
+	"bytes"
+	"text/template"
+)
+
+var t *template.Template
+
+func init() {
+	t, _ = template.ParseGlob("./templates/*.tmpl")
+}
+
+type Parseble interface {
+	Parse() string
+}
+
+//.gitignore template
+
+type GitIgnoreFile struct {
+}
+
+func (gi GitIgnoreFile) Parse() string {
+	w := &bytes.Buffer{}
+	t.ExecuteTemplate(w, "gitignore.tmpl", nil)
+	return w.String()
+}
+
 //README.md template
-var readmeTempl = `#%s
 
-This is the awesome description for %s.
+type ReadmeFile struct {
+	Title   string
+	Project string
+}
 
-## License
-
-This package is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).`
+func (rdm ReadmeFile) Parse() string {
+	w := &bytes.Buffer{}
+	t.ExecuteTemplate(w, "readme.tmpl", rdm)
+	return w.String()
+}
 
 //doc.go template
-var docTempl = `// Add some documentation to your package.
-package main`
+
+type DocFile struct {
+	PackName string
+}
+
+func (doc DocFile) Parse() string {
+	w := &bytes.Buffer{}
+	t.ExecuteTemplate(w, "doc.tmpl", doc)
+	return w.String()
+}
 
 //Main .go file template
-var mainTempl = `package main
 
-import (
-	"fmt"
-)
-
-func main() {
-	fmt.Prinln("Hello from Gootstrap!")
+type MainFile struct {
+	PackName string
 }
-`
+
+func (m MainFile) Parse() string {
+	w := &bytes.Buffer{}
+	t.ExecuteTemplate(w, "main.tmpl", m)
+	return w.String()
+}
 
 //Main _test.go file template
-var mainTestTempl = `package main
 
-import (
-	"testing"
-)
-
-func Test(t *testing.T) {
-	
+type MainTestFile struct {
+	PackName string
 }
-`
 
-var travisTempl = `language: go
-sudo: false
+func (mt MainTestFile) Parse() string {
+	w := &bytes.Buffer{}
+	t.ExecuteTemplate(w, "test.tmpl", mt)
+	return w.String()
+}
 
-go:
-  - 1.3
-  - 1.4
-  - 1.5
-  - tip
+//Main .travis.yml file template
 
-script:
-  - go test -v ./...
-`
+type TravisFile struct {
+}
 
-var mitLicenseTempl = `The MIT License (MIT)
+func (tv TravisFile) Parse() string {
+	w := &bytes.Buffer{}
+	t.ExecuteTemplate(w, "travis.tmpl", nil)
+	return w.String()
+}
 
-Copyright (c) %d %s
+//Main LICENSE.txt file template
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+type LicenseFile struct {
+	Year     int
+	UserName string
+}
 
-The above copyright notice and this permission notice shall be included in
-all copies or substantial portions of the Software.
-
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
-THE SOFTWARE.`
+func (ls LicenseFile) Parse() string {
+	w := &bytes.Buffer{}
+	t.ExecuteTemplate(w, "license.tmpl", ls)
+	return w.String()
+}

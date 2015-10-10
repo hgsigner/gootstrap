@@ -10,9 +10,10 @@ import (
 var minimalPackage = []string{"doc", "main", "test"}
 
 type gootFile struct {
-	anchor, packName, fileName      string
-	template, okMessage, subcommand string
-	output                          io.Writer
+	anchor, packName, fileName string
+	okMessage, subcommand      string
+	template                   Parseble
+	output                     io.Writer
 }
 
 type filesList []gootFile
@@ -63,12 +64,9 @@ func (gf gootFile) createFile() error {
 	}
 	defer fileCreate.Close()
 
-	// Test is the current file has any template
-	// attached to it and,then, writes the output
-	// to os.Stdout.
-	if gf.template != "" {
-		fileCreate.WriteString(gf.template)
-	}
+	// Writes the template into file and
+	// then, writes the output to os.Stdout.
+	fileCreate.WriteString(gf.template.Parse())
 	fmt.Fprintln(gf.output, gf.okMessage)
 
 	return nil
