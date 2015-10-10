@@ -7,15 +7,15 @@ import (
 	"testing"
 )
 
-func contains(t *testing.T, s, contains string) {
-	if !strings.Contains(s, contains) {
-		t.Fatalf("%s\nDoes not contain: %s", s, contains)
+func contains(t *testing.T, s, cont string) {
+	if !strings.Contains(s, cont) {
+		t.Fatalf("%s\nDoes not contain: %s", s, cont)
 	}
 }
 
-func notContains(t *testing.T, s, contains string) {
-	if strings.Contains(s, contains) {
-		t.Fatalf("%s\nShould not contain: %s", s, contains)
+func notContains(t *testing.T, s, cont string) {
+	if strings.Contains(s, cont) {
+		t.Fatalf("%s\nShould not contain: %s", s, cont)
 	}
 }
 

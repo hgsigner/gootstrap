@@ -78,18 +78,14 @@ func (gf gootFile) performCreation() error {
 	// Checks if the subcommand is either ""
 	// or --minimal in order to perform the
 	// creation on the correct files.
+	// If defaults, it checks if the subcommand
+	// matchs the --no-file_name pattern.
 	switch gf.subcommand {
 	case "":
-		err := gf.createFile()
-		if err != nil {
-			return err
-		}
+		return createOrErrorOut(gf)
 	case "--minimal":
 		if gf.isMinimalFile() {
-			err := gf.createFile()
-			if err != nil {
-				return err
-			}
+			return createOrErrorOut(gf)
 		}
 	default:
 		// Checks if the subcommand passed is
@@ -97,14 +93,18 @@ func (gf gootFile) performCreation() error {
 		// creating the package.
 		if matchRemoveFile := findMatch("--no", gf.subcommand); matchRemoveFile != "" {
 			if gf.shoudCreateFile() {
-				err := gf.createFile()
-				if err != nil {
-					return err
-				}
+				return createOrErrorOut(gf)
 			}
 		}
 	}
 
 	return nil
 
+}
+
+func createOrErrorOut(gf gootFile) error {
+	if err := gf.createFile(); err != nil {
+		return err
+	}
+	return nil
 }
