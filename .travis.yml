@@ -8,7 +8,6 @@ go:
   - tip
 
 install:
-  - go get github.com/stretchr/testify/assert
   - go get github.com/hgsigner/stringfy
 
 script:

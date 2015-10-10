@@ -3,13 +3,23 @@ package main
 import (
 	"bytes"
 	"os"
+	"strings"
 	"testing"
-
-	"github.com/stretchr/testify/assert"
 )
 
+func contains(t *testing.T, s, contains string) {
+	if !strings.Contains(s, contains) {
+		t.Fatalf("%s\nDoes not contain: %s", s, contains)
+	}
+}
+
+func notContains(t *testing.T, s, contains string) {
+	if strings.Contains(s, contains) {
+		t.Fatalf("%s\nShould not contain: %s", s, contains)
+	}
+}
+
 func Test_CreatePackageOk(t *testing.T) {
-	a := assert.New(t)
 
 	command := []string{"gootstrap", "new", "new_package"}
 
@@ -20,18 +30,17 @@ func Test_CreatePackageOk(t *testing.T) {
 
 	res := w.String()
 
-	a.Contains(res, "===> Creating .gitignore file")
-	a.Contains(res, "===> Creating .travis.yml file")
-	a.Contains(res, "===> Creating README.md file")
-	a.Contains(res, "===> Creating LICENSE.txt file")
-	a.Contains(res, "===> Creating new_package.go file")
-	a.Contains(res, "===> Creating new_package_test.go file")
-	a.Contains(res, "===> Creating doc.go file")
-	a.Contains(res, "===> Package created! cd new_package to access.")
+	contains(t, res, "===> Creating .gitignore file")
+	contains(t, res, "===> Creating .travis.yml file")
+	contains(t, res, "===> Creating README.md file")
+	contains(t, res, "===> Creating LICENSE.txt file")
+	contains(t, res, "===> Creating new_package.go file")
+	contains(t, res, "===> Creating new_package_test.go file")
+	contains(t, res, "===> Creating doc.go file")
+	contains(t, res, "===> Package created! cd new_package to access.")
 }
 
 func Test_CreateMinimalPackageOk(t *testing.T) {
-	a := assert.New(t)
 
 	command := []string{"gootstrap", "new", "new_package", "--minimal"}
 
@@ -42,19 +51,18 @@ func Test_CreateMinimalPackageOk(t *testing.T) {
 
 	res := w.String()
 
-	a.NotContains(res, "===> Creating .gitignore file")
-	a.NotContains(res, "===> Creating .travis.yml file")
-	a.NotContains(res, "===> Creating README.md file")
-	a.NotContains(res, "===> Creating LICENSE.txt file")
+	notContains(t, res, "===> Creating .gitignore file")
+	notContains(t, res, "===> Creating .travis.yml file")
+	notContains(t, res, "===> Creating README.md file")
+	notContains(t, res, "===> Creating LICENSE.txt file")
 
-	a.Contains(res, "===> Creating new_package.go file")
-	a.Contains(res, "===> Creating new_package_test.go file")
-	a.Contains(res, "===> Creating doc.go file")
-	a.Contains(res, "===> Package created! cd new_package to access.")
+	contains(t, res, "===> Creating new_package.go file")
+	contains(t, res, "===> Creating new_package_test.go file")
+	contains(t, res, "===> Creating doc.go file")
+	contains(t, res, "===> Package created! cd new_package to access.")
 }
 
 func Test_WithWrongSubcommand(t *testing.T) {
-	a := assert.New(t)
 
 	command := []string{"gootstrap", "new", "new_package", "balala"}
 
@@ -62,11 +70,10 @@ func Test_WithWrongSubcommand(t *testing.T) {
 	run(command, w)
 	res := w.String()
 
-	a.Contains(res, "===> Subcommand balala unknown. Try typing one of the following: --minimal")
+	contains(t, res, "===> Subcommand balala unknown. Try typing one of the following: --minimal")
 }
 
 func Test_WithOneArg(t *testing.T) {
-	a := assert.New(t)
 
 	command := []string{"gootstrap"}
 
@@ -74,11 +81,10 @@ func Test_WithOneArg(t *testing.T) {
 	run(command, w)
 	res := w.String()
 
-	a.Contains(res, "===> Not enough arguments. Try goootstrap new project_name")
+	contains(t, res, "===> Not enough arguments. Try goootstrap new project_name")
 }
 
 func Test_WithTwoArgs(t *testing.T) {
-	a := assert.New(t)
 
 	command := []string{"gootstrap", "new"}
 
@@ -86,11 +92,10 @@ func Test_WithTwoArgs(t *testing.T) {
 	run(command, w)
 	res := w.String()
 
-	a.Contains(res, "===> You should set the name of your package. Try goootstrap new project_name")
+	contains(t, res, "===> You should set the name of your package. Try goootstrap new project_name")
 }
 
 func Test_WithThreeArgsCommandNotOk(t *testing.T) {
-	a := assert.New(t)
 
 	command := []string{"gootstrap", "fizz", "buzz"}
 
@@ -98,11 +103,10 @@ func Test_WithThreeArgsCommandNotOk(t *testing.T) {
 	run(command, w)
 	res := w.String()
 
-	a.Contains(res, "===> Command fizz unknown. Try typing the command 'new' instead.")
+	contains(t, res, "===> Command fizz unknown. Try typing the command 'new' instead.")
 }
 
 func Test_CreatePackageExcludingFileOk(t *testing.T) {
-	a := assert.New(t)
 
 	command := []string{"gootstrap", "new", "new_package", "--no-gitignore-travis"}
 
@@ -113,19 +117,19 @@ func Test_CreatePackageExcludingFileOk(t *testing.T) {
 
 	res := w.String()
 
-	a.NotContains(res, "===> Creating .gitignore file")
-	a.NotContains(res, "===> Creating .travis.yml file")
+	notContains(t, res, "===> Creating .gitignore file")
+	notContains(t, res, "===> Creating .travis.yml file")
 
-	a.Contains(res, "===> Creating README.md file")
-	a.Contains(res, "===> Creating LICENSE.txt file")
-	a.Contains(res, "===> Creating new_package.go file")
-	a.Contains(res, "===> Creating new_package_test.go file")
-	a.Contains(res, "===> Creating doc.go file")
-	a.Contains(res, "===> Package created! cd new_package to access.")
+	contains(t, res, "===> Creating README.md file")
+	contains(t, res, "===> Creating LICENSE.txt file")
+	contains(t, res, "===> Creating new_package.go file")
+	contains(t, res, "===> Creating new_package_test.go file")
+	contains(t, res, "===> Creating doc.go file")
+	contains(t, res, "===> Package created! cd new_package to access.")
+
 }
 
 func Test_CreatePackageExcludingFileNotOK(t *testing.T) {
-	a := assert.New(t)
 
 	command := []string{"gootstrap", "new", "new_package", "--no"}
 
@@ -136,12 +140,13 @@ func Test_CreatePackageExcludingFileNotOK(t *testing.T) {
 
 	res := w.String()
 
-	a.Contains(res, "===> Creating .gitignore file")
-	a.Contains(res, "===> Creating .travis.yml file")
-	a.Contains(res, "===> Creating README.md file")
-	a.Contains(res, "===> Creating LICENSE.txt file")
-	a.Contains(res, "===> Creating new_package.go file")
-	a.Contains(res, "===> Creating new_package_test.go file")
-	a.Contains(res, "===> Creating doc.go file")
-	a.Contains(res, "===> Package created! cd new_package to access.")
+	contains(t, res, "===> Creating .gitignore file")
+	contains(t, res, "===> Creating .travis.yml file")
+	contains(t, res, "===> Creating README.md file")
+	contains(t, res, "===> Creating LICENSE.txt file")
+	contains(t, res, "===> Creating new_package.go file")
+	contains(t, res, "===> Creating new_package_test.go file")
+	contains(t, res, "===> Creating doc.go file")
+	contains(t, res, "===> Package created! cd new_package to access.")
+
 }
