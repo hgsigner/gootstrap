@@ -2,13 +2,13 @@
 
 Gootstrap is a simple package that bootstraps new Go packages. I've created it because I was repeating myself a lot while starting new projects.
 
-##Installing
+##Installing:
 
 ```bash
 $ go get github.com/hgsigner/gootstrap
 ```
 
-##Usage
+##Usage:
 After installing, you can use **gootstrap new package_name** to create a new project.
 
 ```bash
@@ -24,12 +24,7 @@ $ goostrap new project_name
 ===> Creating doc.go file
 ===> Package created! cd project_name to access.
 $ cd project_name
-```
 
-If the command goostrap does not work for you, use "$GOPATH/bin/goostrap new project_name" instead.
-
-###Tree
-```
 |-- project_name
     |-- .gitignore
     |-- .travis.yml
@@ -39,6 +34,10 @@ If the command goostrap does not work for you, use "$GOPATH/bin/goostrap new pro
     |-- project_name_test.go
     |-- doc.go
 ```
+
+If the command gootstrap does not work for you, use "$GOPATH/bin/goostrap new project_name" instead.
+
+###--minimal
 
 In order to create a minimal package structure, pass the `--minimal` argument after the package name:
 
@@ -51,15 +50,14 @@ $ goostrap new project_name --minimal
 ===> Creating doc.go file
 ===> Package created! cd project_name to access.
 $ cd project_name
-```
 
-###Tree
-```
 |-- project_name
     |-- project_name.go
     |-- project_name_test.go
     |-- doc.go
 ```
+
+###--no-{file names}
 
 If you want the exclude some files while creating the package, you can pass the subcommand `--no-{file names separated by "-"}`:
 
@@ -74,10 +72,7 @@ $ goostrap new project_name --no-travis-license
 ===> Creating doc.go file
 ===> Package created! cd project_name to access.
 $ cd project_name
-```
 
-###Tree
-```
 |-- project_name
     |-- .gitignore
     |-- REAMDE.md
