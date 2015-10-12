@@ -12,7 +12,7 @@ $ go get github.com/hgsigner/gootstrap
 After installing, you can use **gootstrap new package_name** to create a new project.
 
 ```bash
-$ goostrap new project_name
+$ gootstrap new project_name
 ===> Creating package project_name
 ===> Creating directory
 ===> Creating .gitignore file
@@ -35,14 +35,14 @@ $ cd project_name
     |-- doc.go
 ```
 
-If the command gootstrap does not work for you, use "$GOPATH/bin/goostrap new project_name" instead.
+If the command gootstrap does not work for you, use "$GOPATH/bin/gootstrap new project_name" instead.
 
 ###--minimal
 
 In order to create a minimal package structure, pass the `--minimal` argument after the package name:
 
 ```bash
-$ goostrap new project_name --minimal
+$ gootstrap new project_name --minimal
 ===> Creating package project_name
 ===> Creating directory
 ===> Creating project_name.go file
@@ -62,7 +62,7 @@ $ cd project_name
 If you want the exclude some files while creating the package, you can pass the subcommand `--no-{file names separated by "-"}`:
 
 ```bash
-$ goostrap new project_name --no-travis-license
+$ gootstrap new project_name --no-travis-license
 ===> Creating package project_name
 ===> Creating directory
 ===> Creating .gitignore file
