@@ -34,6 +34,7 @@ func Test_CreatePackageOk(t *testing.T) {
 	contains(t, res, "===> Creating .travis.yml file")
 	contains(t, res, "===> Creating README.md file")
 	contains(t, res, "===> Creating LICENSE.txt file")
+	contains(t, res, "===> Creating CHANGELOG.md file")
 	contains(t, res, "===> Creating new_package.go file")
 	contains(t, res, "===> Creating new_package_test.go file")
 	contains(t, res, "===> Creating doc.go file")
@@ -55,6 +56,7 @@ func Test_CreateMinimalPackageOk(t *testing.T) {
 	notContains(t, res, "===> Creating .travis.yml file")
 	notContains(t, res, "===> Creating README.md file")
 	notContains(t, res, "===> Creating LICENSE.txt file")
+	notContains(t, res, "===> Creating CHANGELOG.md file")
 
 	contains(t, res, "===> Creating new_package.go file")
 	contains(t, res, "===> Creating new_package_test.go file")
@@ -122,6 +124,7 @@ func Test_CreatePackageExcludingFileOk(t *testing.T) {
 
 	contains(t, res, "===> Creating README.md file")
 	contains(t, res, "===> Creating LICENSE.txt file")
+	contains(t, res, "===> Creating CHANGELOG.md file")
 	contains(t, res, "===> Creating new_package.go file")
 	contains(t, res, "===> Creating new_package_test.go file")
 	contains(t, res, "===> Creating doc.go file")
@@ -144,6 +147,7 @@ func Test_CreatePackageExcludingFileNotOK(t *testing.T) {
 	contains(t, res, "===> Creating .travis.yml file")
 	contains(t, res, "===> Creating README.md file")
 	contains(t, res, "===> Creating LICENSE.txt file")
+	contains(t, res, "===> Creating CHANGELOG.md file")
 	contains(t, res, "===> Creating new_package.go file")
 	contains(t, res, "===> Creating new_package_test.go file")
 	contains(t, res, "===> Creating doc.go file")

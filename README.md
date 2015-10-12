@@ -19,6 +19,7 @@ $ gootstrap new project_name
 ===> Creating .travis.yml file
 ===> Creating README.md
 ===> Creating LICENSE.txt file
+===> Creating CHANGELOG.md file
 ===> Creating project_name.go file
 ===> Creating project_name_test.go file
 ===> Creating doc.go file
@@ -30,6 +31,7 @@ $ cd project_name
     |-- .travis.yml
     |-- REAMDE.md
     |-- LICENSE.txt
+    |-- CHANGELOG.md
     |-- project_name.go
     |-- project_name_test.go
     |-- doc.go
@@ -67,6 +69,7 @@ $ gootstrap new project_name --no-travis-license
 ===> Creating directory
 ===> Creating .gitignore file
 ===> Creating README.md
+===> Creating CHANGELOG.md file
 ===> Creating project_name.go file
 ===> Creating project_name_test.go file
 ===> Creating doc.go file
@@ -76,12 +79,13 @@ $ cd project_name
 |-- project_name
     |-- .gitignore
     |-- REAMDE.md
+    |-- CHANGELOG.md
     |-- project_name.go
     |-- project_name_test.go
     |-- doc.go
 ```
 
-File names you can pass to `--no-{files separated by "-"}`: `travis, gitignore, license, readme, main, test and doc`
+File names you can pass to `--no-{files separated by "-"}`: `travis, gitignore, license, readme, main, test, doc and changelog`
 
 - - -
 I know that there are tons of things I could do to make it better, but, for now, it meets my needs. I'll be improving it.

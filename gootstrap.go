@@ -82,7 +82,7 @@ func createPackage(pack_name, subcommand string, out io.Writer) {
 
 	// Init files
 
-	cuurentYear, _, _ := time.Now().Date()
+	cuurentYear, cuurentMonth, cuurentDay := time.Now().Date()
 	user, _ := user.Current()
 
 	files := filesList{
@@ -139,6 +139,14 @@ func createPackage(pack_name, subcommand string, out io.Writer) {
 			fileName:   fmt.Sprintf("%s%sdoc.go", pack_name, sep),
 			template:   DocFile{pack_name},
 			okMessage:  "===> Creating doc.go file",
+			output:     out,
+			subcommand: subcommand,
+		},
+		{
+			anchor:     "changelog",
+			fileName:   fmt.Sprintf("%s%sCHANGELOG.md", pack_name, sep),
+			template:   ChangelogFile{fmt.Sprintf("%d-%d-%d", cuurentYear, cuurentMonth, cuurentDay)},
+			okMessage:  "===> Creating CHANGELOG.md file",
 			output:     out,
 			subcommand: subcommand,
 		},

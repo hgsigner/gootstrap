@@ -98,3 +98,15 @@ func (ls LicenseFile) Parse() string {
 	t.ExecuteTemplate(w, "license.tmpl", ls)
 	return w.String()
 }
+
+//Main CHANGELOG.md file template
+
+type ChangelogFile struct {
+	Date string
+}
+
+func (cl ChangelogFile) Parse() string {
+	w := &bytes.Buffer{}
+	t.ExecuteTemplate(w, "changelog.tmpl", cl)
+	return w.String()
+}
