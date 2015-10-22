@@ -1,112 +1,72 @@
 package main
 
+var changeLogTmpl = `#Changelog
+
+##0.0.1 - {{.Date}}
+
+- Add some changelog to this version
+`
+
+var docTmpl = `// Add some documentation to your package.
+package {{.PackName}}
+`
+
+var gitIgTmpl = `.DS_Store`
+
+var licenseTmpl = `The MIT License (MIT)
+
+Copyright (c) {{.Year}} {{.UserName}}
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+`
+
+var mainTmpl = `package {{.PackName}}`
+
+var readmeTmpl = `#{{.Title}}
+
+This is the awesome description for {{.Project}}.
+
+## License
+
+This package is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
+`
+
+var testTmpl = `package {{.PackName}}
+
 import (
-	"bytes"
-	"text/template"
+	"testing"
 )
 
-var t *template.Template
-
-func init() {
-	t, _ = template.ParseGlob("./templates/*.tmpl")
+func Test(t *testing.T) {
+	
 }
+`
 
-type Parseble interface {
-	Parse() string
-}
+var travisTmpl = `language: go
+sudo: false
 
-//.gitignore template
+go:
+  - 1.3
+  - 1.4
+  - 1.5
+  - tip
 
-type GitIgnoreFile struct {
-}
-
-func (gi GitIgnoreFile) Parse() string {
-	w := &bytes.Buffer{}
-	t.ExecuteTemplate(w, "gitignore.tmpl", nil)
-	return w.String()
-}
-
-//README.md template
-
-type ReadmeFile struct {
-	Title   string
-	Project string
-}
-
-func (rdm ReadmeFile) Parse() string {
-	w := &bytes.Buffer{}
-	t.ExecuteTemplate(w, "readme.tmpl", rdm)
-	return w.String()
-}
-
-//doc.go template
-
-type DocFile struct {
-	PackName string
-}
-
-func (doc DocFile) Parse() string {
-	w := &bytes.Buffer{}
-	t.ExecuteTemplate(w, "doc.tmpl", doc)
-	return w.String()
-}
-
-//Main .go file template
-
-type MainFile struct {
-	PackName string
-}
-
-func (m MainFile) Parse() string {
-	w := &bytes.Buffer{}
-	t.ExecuteTemplate(w, "main.tmpl", m)
-	return w.String()
-}
-
-//Main _test.go file template
-
-type MainTestFile struct {
-	PackName string
-}
-
-func (mt MainTestFile) Parse() string {
-	w := &bytes.Buffer{}
-	t.ExecuteTemplate(w, "test.tmpl", mt)
-	return w.String()
-}
-
-//Main .travis.yml file template
-
-type TravisFile struct {
-}
-
-func (tv TravisFile) Parse() string {
-	w := &bytes.Buffer{}
-	t.ExecuteTemplate(w, "travis.tmpl", nil)
-	return w.String()
-}
-
-//Main LICENSE.txt file template
-
-type LicenseFile struct {
-	Year     int
-	UserName string
-}
-
-func (ls LicenseFile) Parse() string {
-	w := &bytes.Buffer{}
-	t.ExecuteTemplate(w, "license.tmpl", ls)
-	return w.String()
-}
-
-//Main CHANGELOG.md file template
-
-type ChangelogFile struct {
-	Date string
-}
-
-func (cl ChangelogFile) Parse() string {
-	w := &bytes.Buffer{}
-	t.ExecuteTemplate(w, "changelog.tmpl", cl)
-	return w.String()
-}
+script:
+  - go test -v ./...
+`
