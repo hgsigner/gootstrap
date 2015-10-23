@@ -154,3 +154,27 @@ func Test_CreatePackageExcludingFileNotOK(t *testing.T) {
 	contains(t, res, "===> Package created! cd new_package to access.")
 
 }
+
+func Test_CreatePackageWithCustomTemplate(t *testing.T) {
+
+	command := []string{"gootstrap", "new", "new_package", "--template", "example.toml"}
+
+	w := &bytes.Buffer{}
+
+	run(command, w)
+	defer os.RemoveAll(command[2])
+
+	res := w.String()
+
+	contains(t, res, "===> Creating directory new_package")
+	contains(t, res, "===> Creating directory new_package/utils")
+	contains(t, res, "===> Creating directory new_package/labs")
+	contains(t, res, "===> Creating new_package/utils/utils.go file")
+	contains(t, res, "===> Creating new_package/utils/utils_test.go file")
+	contains(t, res, "===> Creating new_package/labs/labs.go file")
+	contains(t, res, "===> Creating new_package/labs/labs_test.go file")
+	contains(t, res, "===> Creating new_package/README.md file")
+	contains(t, res, "===> Creating new_package/main.go file")
+	contains(t, res, "===> Package created! cd new_package to access.")
+
+}

@@ -1,0 +1,53 @@
+#Creates the directories
+
+[[directories]]
+name = "utils"
+	[[directories.files]]
+	name = "utils.go"
+	template = '''package utils'''
+	[[directories.files]]
+	name = "utils_test.go"
+	template = '''package utils
+
+	import "testing"
+
+	func Test(t *testing.T) {
+
+	}
+	'''
+
+[[directories]]
+name = "labs"
+	[[directories.files]]
+	name = "labs.go"
+	template = '''package labs'''
+	
+	[[directories.files]]
+	name = "labs_test.go"
+	template = '''package labs
+
+	import "testing"
+
+	func Test(t *testing.T) {
+
+	}
+	'''
+
+#Creates files in the root directory
+
+[[files]]
+name = "README.md"
+template = '''#Readme
+some reamde
+'''
+
+[[files]]
+name = "main.go"
+template = '''package main
+
+import "fmt"
+
+func main() {
+	fmt.Prinln("Hello!")
+}
+'''

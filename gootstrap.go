@@ -13,7 +13,7 @@ import (
 	"github.com/hgsigner/stringfy"
 )
 
-var knownSubcommands = []string{"--minimal", "--no"}
+var knownSubcommands = []string{"--minimal", "--no", "--template"}
 
 // Runs the program.
 func run(args []string, out io.Writer) {
@@ -58,7 +58,13 @@ func runCommand(args []string, out io.Writer) {
 			fmt.Fprintf(out, "===> Subcommand %s unknown. Try typing one of the following: %s\n", subcommand, strings.Join(knownSubcommands, ", "))
 		} else {
 			fmt.Fprintf(out, "===> Creating package %s\n", pack_name)
-			createPackage(pack_name, subcommand, out)
+
+			if subcommand != "--template" {
+				createDefaultPackage(pack_name, subcommand, out)
+			} else {
+				createTemplatePackage(pack_name, args[4], out)
+			}
+
 			fmt.Fprintf(out, "===> Package created! cd %s to access.\n", pack_name)
 		}
 	default:
@@ -71,14 +77,11 @@ func main() {
 }
 
 // Creates the package with files in it
-func createPackage(pack_name, subcommand string, out io.Writer) {
+func createDefaultPackage(pack_name, subcommand string, out io.Writer) {
 	sep := string(filepath.Separator)
 
 	// Creates the project's folder
-	if _, err := os.Stat(pack_name); os.IsNotExist(err) {
-		os.Mkdir(pack_name, 0777)
-		fmt.Fprintf(out, "===> Creating directory\n")
-	}
+	createFolder(pack_name, out)
 
 	// Init files
 
@@ -87,68 +90,76 @@ func createPackage(pack_name, subcommand string, out io.Writer) {
 
 	files := filesList{
 		{
-			anchor:     "gitignore",
-			fileName:   fmt.Sprintf("%s%s.gitignore", pack_name, sep),
-			template:   GitIgnoreFile{},
-			okMessage:  "===> Creating .gitignore file",
-			output:     out,
-			subcommand: subcommand,
+			anchor:             "gitignore",
+			fileName:           fmt.Sprintf("%s%s.gitignore", pack_name, sep),
+			isTemplateParseble: true,
+			templateParseble:   GitIgnoreFile{},
+			okMessage:          "===> Creating .gitignore file",
+			output:             out,
+			subcommand:         subcommand,
 		},
 		{
-			anchor:     "travis",
-			fileName:   fmt.Sprintf("%s%s.travis.yml", pack_name, sep),
-			template:   TravisFile{},
-			okMessage:  "===> Creating .travis.yml file",
-			output:     out,
-			subcommand: subcommand,
+			anchor:             "travis",
+			fileName:           fmt.Sprintf("%s%s.travis.yml", pack_name, sep),
+			isTemplateParseble: true,
+			templateParseble:   TravisFile{},
+			okMessage:          "===> Creating .travis.yml file",
+			output:             out,
+			subcommand:         subcommand,
 		},
 		{
-			anchor:     "license",
-			fileName:   fmt.Sprintf("%s%sLICENSE.txt", pack_name, sep),
-			template:   LicenseFile{cuurentYear, user.Name},
-			okMessage:  "===> Creating LICENSE.txt file",
-			output:     out,
-			subcommand: subcommand,
+			anchor:             "license",
+			fileName:           fmt.Sprintf("%s%sLICENSE.txt", pack_name, sep),
+			isTemplateParseble: true,
+			templateParseble:   LicenseFile{cuurentYear, user.Name},
+			okMessage:          "===> Creating LICENSE.txt file",
+			output:             out,
+			subcommand:         subcommand,
 		},
 		{
-			anchor:     "readme",
-			fileName:   fmt.Sprintf("%s%sREADME.md", pack_name, sep),
-			template:   ReadmeFile{stringfy.CamelCase(pack_name), pack_name},
-			okMessage:  "===> Creating README.md file",
-			output:     out,
-			subcommand: subcommand,
+			anchor:             "readme",
+			fileName:           fmt.Sprintf("%s%sREADME.md", pack_name, sep),
+			isTemplateParseble: true,
+			templateParseble:   ReadmeFile{stringfy.CamelCase(pack_name), pack_name},
+			okMessage:          "===> Creating README.md file",
+			output:             out,
+			subcommand:         subcommand,
 		},
 		{
-			anchor:     "main",
-			fileName:   fmt.Sprintf("%s%s%s.go", pack_name, sep, pack_name),
-			template:   MainFile{pack_name},
-			okMessage:  fmt.Sprintf("===> Creating %s.go file", pack_name),
-			output:     out,
-			subcommand: subcommand,
+			anchor:             "main",
+			fileName:           fmt.Sprintf("%s%s%s.go", pack_name, sep, pack_name),
+			isTemplateParseble: true,
+			templateParseble:   MainFile{pack_name},
+			okMessage:          fmt.Sprintf("===> Creating %s.go file", pack_name),
+			output:             out,
+			subcommand:         subcommand,
 		},
 		{
-			anchor:     "test",
-			fileName:   fmt.Sprintf("%s%s%s_test.go", pack_name, sep, pack_name),
-			template:   MainTestFile{pack_name},
-			okMessage:  fmt.Sprintf("===> Creating %s_test.go file", pack_name),
-			output:     out,
-			subcommand: subcommand,
+			anchor:             "test",
+			fileName:           fmt.Sprintf("%s%s%s_test.go", pack_name, sep, pack_name),
+			isTemplateParseble: true,
+			templateParseble:   MainTestFile{pack_name},
+			okMessage:          fmt.Sprintf("===> Creating %s_test.go file", pack_name),
+			output:             out,
+			subcommand:         subcommand,
 		},
 		{
-			anchor:     "doc",
-			fileName:   fmt.Sprintf("%s%sdoc.go", pack_name, sep),
-			template:   DocFile{pack_name},
-			okMessage:  "===> Creating doc.go file",
-			output:     out,
-			subcommand: subcommand,
+			anchor:             "doc",
+			fileName:           fmt.Sprintf("%s%sdoc.go", pack_name, sep),
+			isTemplateParseble: true,
+			templateParseble:   DocFile{pack_name},
+			okMessage:          "===> Creating doc.go file",
+			output:             out,
+			subcommand:         subcommand,
 		},
 		{
-			anchor:     "changelog",
-			fileName:   fmt.Sprintf("%s%sCHANGELOG.md", pack_name, sep),
-			template:   ChangelogFile{fmt.Sprintf("%d-%d-%d", cuurentYear, cuurentMonth, cuurentDay)},
-			okMessage:  "===> Creating CHANGELOG.md file",
-			output:     out,
-			subcommand: subcommand,
+			anchor:             "changelog",
+			fileName:           fmt.Sprintf("%s%sCHANGELOG.md", pack_name, sep),
+			isTemplateParseble: true,
+			templateParseble:   ChangelogFile{fmt.Sprintf("%d-%d-%d", cuurentYear, cuurentMonth, cuurentDay)},
+			okMessage:          "===> Creating CHANGELOG.md file",
+			output:             out,
+			subcommand:         subcommand,
 		},
 	}
 
@@ -156,5 +167,61 @@ func createPackage(pack_name, subcommand string, out io.Writer) {
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
+	}
+}
+
+// Creates the package with files in it
+func createTemplatePackage(packName, templPath string, out io.Writer) {
+	sep := string(filepath.Separator)
+
+	// Creates the project's folder
+	createFolder(packName, out)
+
+	tomlTempl, err := NewTomlTemplate(templPath)
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+	files := make(filesList, 0)
+	for _, dir := range tomlTempl.Directories {
+		createFolder(packName+sep+dir.Name, out)
+		for _, fl := range dir.Files {
+			filename := packName + sep + dir.Name + sep + fl.Name
+			gf := gootFile{
+				fileName:    filename,
+				templateRaw: fl.Template,
+				okMessage:   fmt.Sprintf("===> Creating %s file", filename),
+				output:      out,
+			}
+
+			files = append(files, gf)
+		}
+	}
+
+	for _, fl := range tomlTempl.Files {
+		filename := packName + sep + fl.Name
+		gf := gootFile{
+			fileName:    filename,
+			templateRaw: fl.Template,
+			okMessage:   fmt.Sprintf("===> Creating %s file", filename),
+			output:      out,
+		}
+
+		files = append(files, gf)
+	}
+
+	err = files.Process()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+
+}
+
+func createFolder(folderName string, out io.Writer) {
+	if _, err := os.Stat(folderName); os.IsNotExist(err) {
+		os.Mkdir(folderName, 0777)
+		fmt.Fprintf(out, "===> Creating directory %s\n", folderName)
 	}
 }
