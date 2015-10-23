@@ -36,6 +36,10 @@ name = "labs"
 #Creates files in the root directory
 
 [[files]]
+name = ".gitignore"
+template = '''.DS_Store'''
+
+[[files]]
 name = "README.md"
 template = '''#Readme
 some reamde
