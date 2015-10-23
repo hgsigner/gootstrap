@@ -9,6 +9,7 @@ go:
 
 install:
   - go get github.com/hgsigner/stringfy
+  - go get github.com/naoina/toml
 
 script:
   - go test -v ./...
