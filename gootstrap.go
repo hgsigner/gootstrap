@@ -62,6 +62,20 @@ func runCommand(args []string, out io.Writer) {
 			if subcommand != "--template" {
 				createDefaultPackage(pack_name, subcommand, out)
 			} else {
+				// Checks if the template path was passed
+				if len(args) < 5 {
+					fmt.Fprintf(out, "===> You should pass the full path of the template file.\n")
+					return
+				}
+
+				// If the template was passed, it checkes if it exists
+				if _, err := os.Stat(args[4]); os.IsNotExist(err) {
+					fmt.Fprintf(out, "===> The template %s was not found. Please check the full path of the file.\n", args[4])
+					return
+				}
+
+				// Everything is ok.
+				// Should create the package.
 				createTemplatePackage(pack_name, args[4], out)
 			}
 
@@ -177,12 +191,15 @@ func createTemplatePackage(packName, templPath string, out io.Writer) {
 	// Creates the project's folder
 	createFolder(packName, out)
 
+	// Inits a new instance of the toml parsed template
 	tomlTempl, err := NewTomlTemplate(templPath)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
 	}
 
+	// Loops through the template and creates the
+	// folders and files for the folders
 	files := make(filesList, 0)
 	for _, dir := range tomlTempl.Directories {
 		createFolder(packName+sep+dir.Name, out)
@@ -199,6 +216,7 @@ func createTemplatePackage(packName, templPath string, out io.Writer) {
 		}
 	}
 
+	// Creates files in the root directory
 	for _, fl := range tomlTempl.Files {
 		filename := packName + sep + fl.Name
 		gf := gootFile{
@@ -211,6 +229,7 @@ func createTemplatePackage(packName, templPath string, out io.Writer) {
 		files = append(files, gf)
 	}
 
+	// Processes the files
 	err = files.Process()
 	if err != nil {
 		fmt.Println(err)
@@ -219,6 +238,8 @@ func createTemplatePackage(packName, templPath string, out io.Writer) {
 
 }
 
+// Creates the folders.
+// Its a helper function.
 func createFolder(folderName string, out io.Writer) {
 	if _, err := os.Stat(folderName); os.IsNotExist(err) {
 		os.Mkdir(folderName, 0777)

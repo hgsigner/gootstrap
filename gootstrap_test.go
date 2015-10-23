@@ -178,3 +178,27 @@ func Test_CreatePackageWithCustomTemplate(t *testing.T) {
 	contains(t, res, "===> Package created! cd new_package to access.")
 
 }
+
+func Test_CreatePackageWithCustomTemplate_NoTemplate(t *testing.T) {
+
+	command := []string{"gootstrap", "new", "new_package", "--template"}
+
+	w := &bytes.Buffer{}
+	run(command, w)
+	res := w.String()
+
+	contains(t, res, "===> You should pass the full path of the template file.")
+	notContains(t, res, "===> Package created! cd new_package to access.")
+}
+
+func Test_CreatePackageWithCustomTemplate_NotFound(t *testing.T) {
+
+	command := []string{"gootstrap", "new", "new_package", "--template", "foobazbizz.toml"}
+
+	w := &bytes.Buffer{}
+	run(command, w)
+	res := w.String()
+
+	contains(t, res, "===> The template foobazbizz.toml was not found. Please check the full path of the file.")
+	notContains(t, res, "===> Package created! cd new_package to access.")
+}
