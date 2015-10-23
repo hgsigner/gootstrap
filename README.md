@@ -29,7 +29,7 @@ $ cd project_name
 |-- project_name
     |-- .gitignore
     |-- .travis.yml
-    |-- REAMDE.md
+    |-- README.md
     |-- LICENSE.txt
     |-- CHANGELOG.md
     |-- project_name.go
@@ -37,7 +37,7 @@ $ cd project_name
     |-- doc.go
 ```
 
-If the command gootstrap does not work for you, use "$GOPATH/bin/gootstrap new project_name" instead.
+If the command gootstrap does not work for you, use `$GOPATH/bin/gootstrap new project_name` instead.
 
 ###--minimal
 
