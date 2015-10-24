@@ -253,7 +253,7 @@ Creating your own template is simple and can save you a lot of time if keep doin
 For more info on TOML, be sure to check [https://github.com/toml-lang/toml](https://github.com/toml-lang/toml)
 - - -
 
-Any bug or feedback, feel free free to drop me a line :)
+Any bug or feedback, feel free to drop me a line :)
 
 ##Licensing
 This package is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
