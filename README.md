@@ -168,7 +168,7 @@ $ gootstrap new new_project --template /full/path/of/your/example.toml
 
 ##Creating your own template:
 
-Gootstrap only accepts the following arrays of tables:
+Gootstrap only accepts the following arrays of tables as the structure for the templates:
 
 ```toml
 [[directories]] # Creates directory
