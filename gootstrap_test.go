@@ -203,3 +203,19 @@ func Test_CreatePackageWithCustomTemplate_NotFound(t *testing.T) {
 	contains(t, res, "===> The template foobazbizz.toml was not found. Please check the full path of the file.")
 	notContains(t, res, "===> Package created! cd new_package to access.")
 }
+
+func Test_CreatePackageWithCustomTemplate_Placeholder(t *testing.T) {
+
+	command := []string{"gootstrap", "new", "new_package", "--template", "examples/placeholder.toml"}
+
+	w := &bytes.Buffer{}
+
+	run(command, w)
+	defer os.RemoveAll(command[2])
+
+	res := w.String()
+	contains(t, res, "===> Creating directory new_package")
+	contains(t, res, "===> Creating new_package/new_package.go file")
+	contains(t, res, "===> Creating new_package/new_package_test.go file")
+	contains(t, res, "===> Package created! cd new_package to access.")
+}

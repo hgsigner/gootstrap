@@ -99,81 +99,76 @@ func createDefaultPackage(pack_name, subcommand string, out io.Writer) {
 
 	// Init files
 
-	cuurentYear, cuurentMonth, cuurentDay := time.Now().Date()
+	currentYear, currentMonth, currentDay := time.Now().Date()
+	currentDate := fmt.Sprintf("%d-%d-%d", currentYear, currentMonth, currentDay)
 	user, _ := user.Current()
 
 	files := filesList{
 		{
-			anchor:             "gitignore",
-			fileName:           fmt.Sprintf("%s%s.gitignore", pack_name, sep),
-			isTemplateParseble: true,
-			templateParseble:   GitIgnoreFile{},
-			okMessage:          "===> Creating .gitignore file",
-			output:             out,
-			subcommand:         subcommand,
+			anchor:     "gitignore",
+			fileName:   fmt.Sprintf("%s%s.gitignore", pack_name, sep),
+			template:   GitIgnoreFile{},
+			okMessage:  "===> Creating .gitignore file",
+			output:     out,
+			subcommand: subcommand,
 		},
 		{
-			anchor:             "travis",
-			fileName:           fmt.Sprintf("%s%s.travis.yml", pack_name, sep),
-			isTemplateParseble: true,
-			templateParseble:   TravisFile{},
-			okMessage:          "===> Creating .travis.yml file",
-			output:             out,
-			subcommand:         subcommand,
+			anchor:     "travis",
+			fileName:   fmt.Sprintf("%s%s.travis.yml", pack_name, sep),
+			template:   TravisFile{},
+			okMessage:  "===> Creating .travis.yml file",
+			output:     out,
+			subcommand: subcommand,
 		},
 		{
-			anchor:             "license",
-			fileName:           fmt.Sprintf("%s%sLICENSE.txt", pack_name, sep),
-			isTemplateParseble: true,
-			templateParseble:   LicenseFile{cuurentYear, user.Name},
-			okMessage:          "===> Creating LICENSE.txt file",
-			output:             out,
-			subcommand:         subcommand,
+			anchor:     "license",
+			fileName:   fmt.Sprintf("%s%sLICENSE.txt", pack_name, sep),
+			template:   LicenseFile{currentYear, user.Name},
+			okMessage:  "===> Creating LICENSE.txt file",
+			output:     out,
+			subcommand: subcommand,
 		},
 		{
-			anchor:             "readme",
-			fileName:           fmt.Sprintf("%s%sREADME.md", pack_name, sep),
-			isTemplateParseble: true,
-			templateParseble:   ReadmeFile{stringfy.CamelCase(pack_name), pack_name},
-			okMessage:          "===> Creating README.md file",
-			output:             out,
-			subcommand:         subcommand,
+			anchor:     "readme",
+			fileName:   fmt.Sprintf("%s%sREADME.md", pack_name, sep),
+			template:   ReadmeFile{stringfy.CamelCase(pack_name), pack_name},
+			okMessage:  "===> Creating README.md file",
+			output:     out,
+			subcommand: subcommand,
 		},
 		{
-			anchor:             "main",
-			fileName:           fmt.Sprintf("%s%s%s.go", pack_name, sep, pack_name),
-			isTemplateParseble: true,
-			templateParseble:   MainFile{pack_name},
-			okMessage:          fmt.Sprintf("===> Creating %s.go file", pack_name),
-			output:             out,
-			subcommand:         subcommand,
+			anchor:     "main",
+			fileName:   fmt.Sprintf("%s%s%s.go", pack_name, sep, pack_name),
+			template:   MainFile{pack_name},
+			okMessage:  fmt.Sprintf("===> Creating %s.go file", pack_name),
+			output:     out,
+			subcommand: subcommand,
 		},
 		{
-			anchor:             "test",
-			fileName:           fmt.Sprintf("%s%s%s_test.go", pack_name, sep, pack_name),
-			isTemplateParseble: true,
-			templateParseble:   MainTestFile{pack_name},
-			okMessage:          fmt.Sprintf("===> Creating %s_test.go file", pack_name),
-			output:             out,
-			subcommand:         subcommand,
+			anchor:     "test",
+			fileName:   fmt.Sprintf("%s%s%s_test.go", pack_name, sep, pack_name),
+			template:   MainTestFile{pack_name},
+			okMessage:  fmt.Sprintf("===> Creating %s_test.go file", pack_name),
+			output:     out,
+			subcommand: subcommand,
 		},
 		{
-			anchor:             "doc",
-			fileName:           fmt.Sprintf("%s%sdoc.go", pack_name, sep),
-			isTemplateParseble: true,
-			templateParseble:   DocFile{pack_name},
-			okMessage:          "===> Creating doc.go file",
-			output:             out,
-			subcommand:         subcommand,
+			anchor:   "doc",
+			fileName: fmt.Sprintf("%s%sdoc.go", pack_name, sep),
+
+			template:   DocFile{pack_name},
+			okMessage:  "===> Creating doc.go file",
+			output:     out,
+			subcommand: subcommand,
 		},
 		{
-			anchor:             "changelog",
-			fileName:           fmt.Sprintf("%s%sCHANGELOG.md", pack_name, sep),
-			isTemplateParseble: true,
-			templateParseble:   ChangelogFile{fmt.Sprintf("%d-%d-%d", cuurentYear, cuurentMonth, cuurentDay)},
-			okMessage:          "===> Creating CHANGELOG.md file",
-			output:             out,
-			subcommand:         subcommand,
+			anchor:   "changelog",
+			fileName: fmt.Sprintf("%s%sCHANGELOG.md", pack_name, sep),
+
+			template:   ChangelogFile{currentDate},
+			okMessage:  "===> Creating CHANGELOG.md file",
+			output:     out,
+			subcommand: subcommand,
 		},
 	}
 
@@ -204,28 +199,16 @@ func createTemplatePackage(packName, templPath string, out io.Writer) {
 	for _, dir := range tomlTempl.Directories {
 		createFolder(packName+sep+dir.Name, out)
 		for _, fl := range dir.Files {
-			filename := packName + sep + dir.Name + sep + fl.Name
-			gf := gootFile{
-				fileName:    filename,
-				templateRaw: fl.Template,
-				okMessage:   fmt.Sprintf("===> Creating %s file", filename),
-				output:      out,
-			}
-
+			filepath := packName + sep + dir.Name + sep
+			gf := createCustomGootFile(packName, fl.Name, fl.Template, filepath, out)
 			files = append(files, gf)
 		}
 	}
 
 	// Creates files in the root directory
 	for _, fl := range tomlTempl.Files {
-		filename := packName + sep + fl.Name
-		gf := gootFile{
-			fileName:    filename,
-			templateRaw: fl.Template,
-			okMessage:   fmt.Sprintf("===> Creating %s file", filename),
-			output:      out,
-		}
-
+		filepath := packName + sep
+		gf := createCustomGootFile(packName, fl.Name, fl.Template, filepath, out)
 		files = append(files, gf)
 	}
 
@@ -245,4 +228,31 @@ func createFolder(folderName string, out io.Writer) {
 		os.Mkdir(folderName, 0777)
 		fmt.Fprintf(out, "===> Creating directory %s\n", folderName)
 	}
+}
+
+// Creates the custom gootFiles.
+// Its a helper function.
+func createCustomGootFile(packName, fileName, template, filepath string, out io.Writer) gootFile {
+	currentYear, currentMonth, currentDay := time.Now().Date()
+	currentDate := fmt.Sprintf("%d-%d-%d", currentYear, currentMonth, currentDay)
+	user, _ := user.Current()
+
+	fileNameTempl := CustomTemplate{PackageName: packName, Template: fileName}
+
+	filename := filepath + fileNameTempl.Parse()
+
+	gf := gootFile{
+		fileName: filename,
+		template: CustomTemplate{
+			PackageName: packName,
+			CurrentYear: currentYear,
+			UserName:    user.Name,
+			Date:        currentDate,
+			Template:    template,
+		},
+		okMessage: fmt.Sprintf("===> Creating %s file", filename),
+		output:    out,
+	}
+
+	return gf
 }

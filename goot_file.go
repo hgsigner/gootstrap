@@ -12,9 +12,7 @@ var minimalPackage = []string{"doc", "main", "test"}
 type gootFile struct {
 	anchor, packName, fileName string
 	okMessage, subcommand      string
-	templateParseble           Parseble
-	isTemplateParseble         bool
-	templateRaw                string
+	template                   Parseble
 	output                     io.Writer
 }
 
@@ -68,12 +66,7 @@ func (gf gootFile) createFile() error {
 
 	// Writes the template into file and
 	// then, writes the output to os.Stdout.
-	if gf.isTemplateParseble {
-		fileCreate.WriteString(gf.templateParseble.Parse())
-	} else {
-		fileCreate.WriteString(gf.templateRaw)
-	}
-
+	fileCreate.WriteString(gf.template.Parse())
 	fmt.Fprintln(gf.output, gf.okMessage)
 
 	return nil

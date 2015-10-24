@@ -1,0 +1,13 @@
+[[files]]
+name = "{{.PackageName}}.go"
+template = '''package {{.PackageName}}'''
+[[files]]
+name = "{{.PackageName}}_test.go"
+template = '''package {{.PackageName}}
+
+import "testing"
+
+func Test(t *testing.T) {
+
+}
+'''

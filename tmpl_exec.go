@@ -89,6 +89,21 @@ func (cl ChangelogFile) Parse() string {
 	return parse_templates("changelog", changeLogTmpl, cl)
 }
 
+// Custom template parser
+
+type CustomTemplate struct {
+	PackageName string
+	CurrentYear int
+	UserName    string
+	Date        string
+	Template    string
+}
+
+func (ct CustomTemplate) Parse() string {
+	return parse_templates("customtemplate", ct.Template, ct)
+}
+
+// Parse helper
 func parse_templates(name, tmpl string, prs Parseble) string {
 	w := &bytes.Buffer{}
 	t := template.Must(template.New(name).Parse(tmpl))
