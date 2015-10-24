@@ -217,5 +217,6 @@ func Test_CreatePackageWithCustomTemplate_Placeholder(t *testing.T) {
 	contains(t, res, "===> Creating directory new_package")
 	contains(t, res, "===> Creating new_package/new_package.go file")
 	contains(t, res, "===> Creating new_package/new_package_test.go file")
+	contains(t, res, "===> Creating new_package/README.md file")
 	contains(t, res, "===> Package created! cd new_package to access.")
 }

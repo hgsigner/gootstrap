@@ -92,11 +92,12 @@ func (cl ChangelogFile) Parse() string {
 // Custom template parser
 
 type CustomTemplate struct {
-	PackageName string
-	CurrentYear int
-	UserName    string
-	Date        string
-	Template    string
+	PackageName          string
+	HumanizedPackageName string
+	CurrentYear          int
+	UserName             string
+	Date                 string
+	Template             string
 }
 
 func (ct CustomTemplate) Parse() string {

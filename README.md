@@ -248,6 +248,45 @@ $ gootstrap new new_project --template /full/path/of/your/example2.toml
 ===> Package created! cd new_project_ex2 to access.
 ```
 
+###Placeholders:
+
+Gootstrap allows you to insert placeholders inside your templates in order to replace it with custom text. The built in placeholders are:
+
+- `{{.PackageName}}`: Gets the package name (gootstrap new **new_pack**);
+- `{{.HumanizedPackageName}}`: Returns the humanized package name (e.g. **NewPackage**);
+- `{{.CurrentYear}}`: Gets the current year;
+- `{{.UserName}}`: Gets the user's computer name;
+- `{{.Date}}`: Gets the current date (YYYY-MM-DD).
+
+####Usage:
+
+```toml
+# placeholder.toml
+[[files]]
+name = "{{.PackageName}}.go"
+template = '''package {{.PackageName}}'''
+[[files]]
+name = "{{.PackageName}}_test.go"
+template = '''package {{.PackageName}}
+
+import "testing"
+
+func Test(t *testing.T) {
+
+}
+'''
+```
+
+####Performing:
+
+```shell
+$ gootstrap new place_holder --template /full/path/of/your/placeholder.toml 
+===> Creating package place_holder
+===> Creating place_holder/place_holder.go file
+===> Creating place_holder/place_holder_test.go file
+===> Package created! cd place_holder to access.
+```
+
 Creating your own template is simple and can save you a lot of time if keep doing the same thing over and over again.
 - - -
 For more info on TOML, be sure to check [https://github.com/toml-lang/toml](https://github.com/toml-lang/toml)

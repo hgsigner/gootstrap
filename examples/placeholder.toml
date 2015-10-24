@@ -11,3 +11,8 @@ func Test(t *testing.T) {
 
 }
 '''
+[[files]]
+name = "README.md"
+template = '''#{{.HumanizedPackageName}}
+Some package doc.
+'''

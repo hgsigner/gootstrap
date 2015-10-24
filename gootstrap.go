@@ -244,11 +244,12 @@ func createCustomGootFile(packName, fileName, template, filepath string, out io.
 	gf := gootFile{
 		fileName: filename,
 		template: CustomTemplate{
-			PackageName: packName,
-			CurrentYear: currentYear,
-			UserName:    user.Name,
-			Date:        currentDate,
-			Template:    template,
+			PackageName:          packName,
+			HumanizedPackageName: stringfy.CamelCase(packName),
+			CurrentYear:          currentYear,
+			UserName:             user.Name,
+			Date:                 currentDate,
+			Template:             template,
 		},
 		okMessage: fmt.Sprintf("===> Creating %s file", filename),
 		output:    out,
