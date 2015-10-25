@@ -24,6 +24,9 @@ type directory struct {
 	Files []file
 }
 
+// Creates a new instance of the tomlConfig
+// struct and reads the file accordingly, checkins
+// its a local a file or a remote file.
 func NewTomlTemplate(fileLocation string) (*tomlConfig, error) {
 
 	var buf []byte
@@ -51,6 +54,7 @@ func NewTomlTemplate(fileLocation string) (*tomlConfig, error) {
 	return &config, nil
 }
 
+// Reads local files
 func getLocalFile(filePath string) ([]byte, error) {
 
 	f, err := os.Open(filePath)
@@ -67,6 +71,7 @@ func getLocalFile(filePath string) ([]byte, error) {
 	return buf, nil
 }
 
+// Reads remote files
 func getRemoteFile(url string) ([]byte, error) {
 
 	resp, err := http.Get(url)

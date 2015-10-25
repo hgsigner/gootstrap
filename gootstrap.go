@@ -60,7 +60,11 @@ func runCommand(args []string, out io.Writer) {
 			fmt.Fprintf(out, "===> Creating package %s\n", pack_name)
 
 			if subcommand != "--template" {
-				createDefaultPackage(pack_name, subcommand, out)
+				err := createDefaultPackage(pack_name, subcommand, out)
+				if err != nil {
+					fmt.Fprintf(out, "===> Error: %s\n", err)
+					return
+				}
 			} else {
 				// Checks if the template path was passed
 				if len(args) < 5 {
@@ -70,7 +74,11 @@ func runCommand(args []string, out io.Writer) {
 
 				// Everything is ok.
 				// Should create the package.
-				createTemplatePackage(pack_name, args[4], out)
+				err := createTemplatePackage(pack_name, args[4], out)
+				if err != nil {
+					fmt.Fprintf(out, "===> Error: %s\n", err)
+					return
+				}
 			}
 
 			fmt.Fprintf(out, "===> Package created! cd %s to access.\n", pack_name)
@@ -85,7 +93,7 @@ func main() {
 }
 
 // Creates the package with files in it
-func createDefaultPackage(pack_name, subcommand string, out io.Writer) {
+func createDefaultPackage(pack_name, subcommand string, out io.Writer) error {
 	sep := string(filepath.Separator)
 
 	// Creates the project's folder
@@ -168,20 +176,20 @@ func createDefaultPackage(pack_name, subcommand string, out io.Writer) {
 
 	err := files.Process()
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		return err
 	}
+
+	return nil
 }
 
 // Creates the package with files in it
-func createTemplatePackage(packName, templPath string, out io.Writer) {
+func createTemplatePackage(packName, templPath string, out io.Writer) error {
 	sep := string(filepath.Separator)
 
 	// Inits a new instance of the toml parsed template
 	tomlTempl, err := NewTomlTemplate(templPath)
 	if err != nil {
-		fmt.Fprintf(out, "===> Error: %s\n", err)
-		os.Exit(1)
+		return err
 	}
 
 	// Creates the project's folder
@@ -209,9 +217,10 @@ func createTemplatePackage(packName, templPath string, out io.Writer) {
 	// Processes the files
 	err = files.Process()
 	if err != nil {
-		fmt.Println(err)
-		os.Exit(1)
+		return err
 	}
+
+	return nil
 
 }
 
