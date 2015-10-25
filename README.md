@@ -287,6 +287,27 @@ $ gootstrap new place_holder --template /full/path/of/your/placeholder.toml
 ===> Package created! cd place_holder to access.
 ```
 
+####Remote Templates:
+
+Gootstrap also allwos you can fetch templates from remote servers, passing its url as the argument for the `--template` flag:
+
+```bash
+$ gootstrap new remote_simple --template https://raw.githubusercontent.com/hgsigner/gootstrap/master/examples/simple.toml
+===> Creating package remote_simple
+===> Fetiching url: https://raw.githubusercontent.com/hgsigner/gootstrap/master/examples/simple.toml
+===> Creating directory remote_simple
+===> Creating directory remote_simple/utils
+===> Creating directory remote_simple/labs
+===> Creating remote_simple/utils/utils.go file
+===> Creating remote_simple/utils/utils_test.go file
+===> Creating remote_simple/labs/labs.go file
+===> Creating remote_simple/labs/labs_test.go file
+===> Creating remote_simple/.gitignore file
+===> Creating remote_simple/README.md file
+===> Creating remote_simple/main.go file
+===> Package created! cd remote_simple to access.
+```
+
 Creating your own template is simple and can save you a lot of time if keep doing the same thing over and over again.
 - - -
 For more info on TOML, be sure to check [https://github.com/toml-lang/toml](https://github.com/toml-lang/toml)

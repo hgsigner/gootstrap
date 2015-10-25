@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"io/ioutil"
 	"net/http"
@@ -79,6 +80,10 @@ func getRemoteFile(url string) ([]byte, error) {
 		return nil, err
 	}
 	defer resp.Body.Close()
+
+	if resp.StatusCode == 404 {
+		return nil, errors.New("File not found on remote. Check your url again.")
+	}
 
 	body, err := ioutil.ReadAll(resp.Body)
 	if err != nil {

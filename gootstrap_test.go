@@ -192,7 +192,7 @@ func Test_CreatePackageWithCustomTemplate_NoTemplate(t *testing.T) {
 	notContains(t, res, "===> Package created! cd new_package to access.")
 }
 
-func Test_CreatePackageWithCustomTemplate_NotFound(t *testing.T) {
+func Test_CreatePackageWithCustomTemplate_LocalNotFound(t *testing.T) {
 	command := []string{"gootstrap", "new", "new_package", "--template", "foobazbizz.toml"}
 
 	w := &bytes.Buffer{}
