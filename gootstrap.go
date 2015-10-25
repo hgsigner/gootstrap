@@ -68,12 +68,6 @@ func runCommand(args []string, out io.Writer) {
 					return
 				}
 
-				// If the template was passed, it checkes if it exists
-				if _, err := os.Stat(args[4]); os.IsNotExist(err) {
-					fmt.Fprintf(out, "===> The template %s was not found. Please check the full path of the file.\n", args[4])
-					return
-				}
-
 				// Everything is ok.
 				// Should create the package.
 				createTemplatePackage(pack_name, args[4], out)
@@ -183,15 +177,15 @@ func createDefaultPackage(pack_name, subcommand string, out io.Writer) {
 func createTemplatePackage(packName, templPath string, out io.Writer) {
 	sep := string(filepath.Separator)
 
-	// Creates the project's folder
-	createFolder(packName, out)
-
 	// Inits a new instance of the toml parsed template
 	tomlTempl, err := NewTomlTemplate(templPath)
 	if err != nil {
-		fmt.Println(err)
+		fmt.Fprintf(out, "===> Error: %s\n", err)
 		os.Exit(1)
 	}
+
+	// Creates the project's folder
+	createFolder(packName, out)
 
 	// Loops through the template and creates the
 	// folders and files for the folders
