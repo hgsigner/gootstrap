@@ -215,7 +215,7 @@ name = "routes"
 	}
 	'''
 
-#Creates files inside the rood folder
+#Creates files inside the root folder
 [[files]]
 name = "CHANGELOG.md"
 template = '''#Changelog
