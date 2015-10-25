@@ -241,7 +241,7 @@ $ gootstrap new new_project --template /full/path/of/your/example2.toml
 ===> Creating package new_project_ex2
 ===> Creating directory new_project_ex2
 ===> Creating directory new_project_ex2/routes
-===> Creating new_project_ex2/routes/routes file
+===> Creating new_project_ex2/routes/routes.go file
 ===> Creating new_project_ex2/routes/routes_test.go file
 ===> Creating new_project_ex2/CHANGELOG.md file
 ===> Creating new_project_ex2/main.go file
