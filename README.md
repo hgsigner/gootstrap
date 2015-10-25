@@ -289,7 +289,7 @@ $ gootstrap new place_holder --template /full/path/of/your/placeholder.toml
 
 ####Remote Templates:
 
-Gootstrap also allwos you can fetch templates from remote servers, passing its url as the argument for the `--template` flag:
+Gootstrap also allwos you to fetch templates from remote servers, passing its url as the argument for the `--template` flag:
 
 ```bash
 $ gootstrap new remote_simple --template https://raw.githubusercontent.com/hgsigner/gootstrap/master/examples/simple.toml
