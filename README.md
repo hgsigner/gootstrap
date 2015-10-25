@@ -9,6 +9,9 @@ $ go get github.com/hgsigner/gootstrap
 ```
 
 ##Usage:
+
+###Default Package:
+
 After installing, you can use **gootstrap new package_name** to create a new project.
 
 ```bash
@@ -39,9 +42,9 @@ $ cd project_name
 
 If the command gootstrap does not work for you, use `$GOPATH/bin/gootstrap new project_name` instead.
 
-###--minimal
+####--minimal:
 
-In order to create a minimal package structure, pass the `--minimal` argument after the package name:
+In order to create a minimal package structure **(main file, test file and doc file)**, pass the `--minimal` flag after the package name:
 
 ```bash
 $ gootstrap new project_name --minimal
@@ -59,7 +62,25 @@ $ cd project_name
     |-- doc.go
 ```
 
-###--no-{file names}
+####--light:
+
+In order to create a light package structure **(main file and test file)**, pass the `--light` flag after the package name:
+
+```bash
+$ gootstrap new project_name --light
+===> Creating package project_name
+===> Creating directory
+===> Creating project_name.go file
+===> Creating project_name_test.go file
+===> Package created! cd project_name to access.
+$ cd project_name
+
+|-- project_name
+    |-- project_name.go
+    |-- project_name_test.go
+```
+
+####--no-{file names}:
 
 If you want the exclude some files while creating the package, you can pass the subcommand `--no-{file names separated by "-"}`:
 
@@ -87,7 +108,8 @@ $ cd project_name
 
 File names you can pass to `--no-{files separated by "-"}`: `travis, gitignore, license, readme, main, test, doc and changelog`
 
-##Custom Templates:
+###Custom Templates:
+
 Gootstrap allows you to create your own template file and use it as reference when creating your package. Gootstrap uses `*.toml` files in order organize the templates.
 
 Lets assume that you have the following `example.toml` file in your file's system:
@@ -151,7 +173,7 @@ func main() {
 
 Passing the **FULLPATH** of your template file as argument for `--template` flag on gootstrap, will produce the following result:
 
-```shell
+```bash
 $ gootstrap new new_project --template /full/path/of/your/example.toml 
 ===> Creating package new_project
 ===> Creating directory new_project
@@ -236,7 +258,7 @@ func main() {
 
 Lets use it:
 
-```shell
+```bash
 $ gootstrap new new_project --template /full/path/of/your/example2.toml 
 ===> Creating package new_project_ex2
 ===> Creating directory new_project_ex2
@@ -279,7 +301,7 @@ func Test(t *testing.T) {
 
 ####Performing:
 
-```shell
+```bash
 $ gootstrap new place_holder --template /full/path/of/your/placeholder.toml 
 ===> Creating package place_holder
 ===> Creating place_holder/place_holder.go file
@@ -308,7 +330,7 @@ $ gootstrap new remote_simple --template https://raw.githubusercontent.com/hgsig
 ===> Package created! cd remote_simple to access.
 ```
 
-Creating your own template is simple and can save you a lot of time if keep doing the same thing over and over again.
+Creating your own template is simple and can save you a lot of time if you keep doing the same thing over and over again.
 - - -
 For more info on TOML, be sure to check [https://github.com/toml-lang/toml](https://github.com/toml-lang/toml)
 - - -

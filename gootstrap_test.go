@@ -64,6 +64,29 @@ func Test_CreateMinimalPackageOk(t *testing.T) {
 	contains(t, res, "===> Package created! cd new_package to access.")
 }
 
+func Test_CreateLightPackageOk(t *testing.T) {
+
+	command := []string{"gootstrap", "new", "new_package", "--light"}
+
+	w := &bytes.Buffer{}
+
+	run(command, w)
+	defer os.RemoveAll(command[2])
+
+	res := w.String()
+
+	notContains(t, res, "===> Creating .gitignore file")
+	notContains(t, res, "===> Creating .travis.yml file")
+	notContains(t, res, "===> Creating README.md file")
+	notContains(t, res, "===> Creating LICENSE.txt file")
+	notContains(t, res, "===> Creating CHANGELOG.md file")
+	notContains(t, res, "===> Creating doc.go file")
+
+	contains(t, res, "===> Creating new_package.go file")
+	contains(t, res, "===> Creating new_package_test.go file")
+	contains(t, res, "===> Package created! cd new_package to access.")
+}
+
 func Test_WithWrongSubcommand(t *testing.T) {
 
 	command := []string{"gootstrap", "new", "new_package", "balala"}

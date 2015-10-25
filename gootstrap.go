@@ -13,7 +13,7 @@ import (
 	"github.com/hgsigner/stringfy"
 )
 
-var knownSubcommands = []string{"--minimal", "--no", "--template"}
+var knownSubcommands = []string{"--minimal", "--light", "--no", "--template"}
 
 // Runs the program.
 func run(args []string, out io.Writer) {

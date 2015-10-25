@@ -8,6 +8,7 @@ import (
 )
 
 var minimalPackage = []string{"doc", "main", "test"}
+var lightPackage = []string{"main", "test"}
 
 type gootFile struct {
 	anchor, packName, fileName string
@@ -32,6 +33,17 @@ func (fl filesList) Process() error {
 // version of the package.
 func (gf gootFile) isMinimalFile() bool {
 	for _, value := range minimalPackage {
+		if gf.anchor == value {
+			return true
+		}
+	}
+	return false
+}
+
+// Checks if a given file is part of the light
+// version of the package.
+func (gf gootFile) isLightFile() bool {
+	for _, value := range lightPackage {
 		if gf.anchor == value {
 			return true
 		}
@@ -85,6 +97,10 @@ func (gf gootFile) performCreation() error {
 		return createOrErrorOut(gf)
 	case "--minimal":
 		if gf.isMinimalFile() {
+			return createOrErrorOut(gf)
+		}
+	case "--light":
+		if gf.isLightFile() {
 			return createOrErrorOut(gf)
 		}
 	default:
