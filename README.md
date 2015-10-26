@@ -114,7 +114,7 @@ Gootstrap allows you to create your own template file and use it as reference wh
 
 Lets assume that you have the following `example.toml` file in your file's system:
 
-```tmol
+```toml
 #Creates the directories
 
 [[directories]]
