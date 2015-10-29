@@ -28,7 +28,11 @@ $ gootstrap new project_name
 ===> Creating doc.go file
 ===> Package created! cd project_name to access.
 $ cd project_name
+```
 
+**Tree:**
+
+```
 |-- project_name
     |-- .gitignore
     |-- .travis.yml
@@ -55,7 +59,11 @@ $ gootstrap new project_name --minimal
 ===> Creating doc.go file
 ===> Package created! cd project_name to access.
 $ cd project_name
+```
 
+**Tree:**
+
+```
 |-- project_name
     |-- project_name.go
     |-- project_name_test.go
@@ -74,10 +82,15 @@ $ gootstrap new project_name --light
 ===> Creating project_name_test.go file
 ===> Package created! cd project_name to access.
 $ cd project_name
+```
 
+**Tree:**
+
+```
 |-- project_name
     |-- project_name.go
     |-- project_name_test.go
+
 ```
 
 ####--no-{file names}:
@@ -96,7 +109,11 @@ $ gootstrap new project_name --no-travis-license
 ===> Creating doc.go file
 ===> Package created! cd project_name to access.
 $ cd project_name
+```
 
+**Tree:**
+
+```
 |-- project_name
     |-- .gitignore
     |-- REAMDE.md
@@ -188,6 +205,20 @@ $ gootstrap new new_project --template /full/path/of/your/example.toml
 ===> Package created! cd new_project to access.
 ```
 
+**Tree:**
+
+```
+|-- new_project
+    |-- utils
+        |-- utils.go
+        |-- utils_test.go
+    |-- labs
+        |-- labs.go
+        |-- labs_test.go
+    |-- README.md
+    |-- main.go
+```
+
 ##Creating your own template:
 
 Gootstrap only accepts the following arrays of tables as the structure for the templates:
@@ -270,6 +301,17 @@ $ gootstrap new new_project --template /full/path/of/your/example2.toml
 ===> Package created! cd new_project_ex2 to access.
 ```
 
+**Tree:**
+
+```
+|-- new_project_ex2
+    |-- routes
+        |-- routes.go
+        |-- routes_test.go
+    |-- CHANGELOG.md
+    |-- main.go
+```
+
 ###Placeholders:
 
 Gootstrap allows you to insert placeholders inside your templates in order to replace it with custom text. The built in placeholders are:
@@ -309,6 +351,14 @@ $ gootstrap new place_holder --template /full/path/of/your/placeholder.toml
 ===> Package created! cd place_holder to access.
 ```
 
+**Tree:**
+
+```
+|-- place_holder
+    |-- place_holder.go
+    |-- place_holder_test.go
+```
+
 ####Remote Templates:
 
 Gootstrap also allows you to fetch templates from remote servers, passing its url as the argument for the `--template` flag:
@@ -330,6 +380,21 @@ $ gootstrap new remote_simple --template https://raw.githubusercontent.com/hgsig
 ===> Package created! cd remote_simple to access.
 ```
 
+**Tree:**
+
+```
+|-- remote_simple
+    |-- utils
+        |-- utils.go
+        |-- utils_test.go
+    |-- labs
+        |-- labs.go
+        |-- labs_test.go
+    |-- .gitignore
+    |-- README.md
+    |-- main.go
+```
+- - - 
 Creating your own template is simple and can save you a lot of time if you keep doing the same thing over and over again.
 - - -
 For more info on TOML, be sure to check [https://github.com/toml-lang/toml](https://github.com/toml-lang/toml)
