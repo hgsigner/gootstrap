@@ -1,16 +1,16 @@
-#Gootstrap [![Build Status](https://travis-ci.org/hgsigner/gonumbers.svg?branch=master)](https://travis-ci.org/hgsigner/gonumbers)
+# Gootstrap [![Build Status](https://travis-ci.org/hgsigner/gonumbers.svg?branch=master)](https://travis-ci.org/hgsigner/gonumbers)
 
 Gootstrap is a simple package that bootstraps new Go packages. I've created it because I was repeating myself a lot while starting new projects.
 
-##Installing:
+## Installing:
 
 ```bash
 $ go get github.com/hgsigner/gootstrap
 ```
 
-##Usage:
+## Usage:
 
-###Default Package:
+### Default Package:
 
 After installing, you can use **gootstrap new package_name** to create a new project.
 
@@ -46,7 +46,7 @@ $ cd project_name
 
 If the command gootstrap does not work for you, use `$GOPATH/bin/gootstrap new project_name` instead.
 
-####--minimal:
+#### --minimal:
 
 In order to create a minimal package structure **(main file, test file and doc file)**, pass the `--minimal` flag after the package name:
 
@@ -70,7 +70,7 @@ $ cd project_name
     |-- doc.go
 ```
 
-####--light:
+#### --light:
 
 In order to create a light package structure **(main file and test file)**, pass the `--light` flag after the package name:
 
@@ -93,7 +93,7 @@ $ cd project_name
 
 ```
 
-####--no-{file names}:
+#### --no-{file names}:
 
 If you want the exclude some files while creating the package, you can pass the subcommand `--no-{file names separated by "-"}`:
 
@@ -125,7 +125,7 @@ $ cd project_name
 
 File names you can pass to `--no-{files separated by "-"}`: `travis, gitignore, license, readme, main, test, doc and changelog`
 
-###Custom Templates:
+### Custom Templates:
 
 Gootstrap allows you to create your own template file and use it as reference when creating your package. Gootstrap uses `*.toml` files in order organize the templates.
 
@@ -219,7 +219,7 @@ $ gootstrap new new_project --template /full/path/of/your/example.toml
     |-- main.go
 ```
 
-##Creating your own template:
+## Creating your own template:
 
 Gootstrap only accepts the following arrays of tables as the structure for the templates:
 
@@ -312,7 +312,7 @@ $ gootstrap new new_project --template /full/path/of/your/example2.toml
     |-- main.go
 ```
 
-###Placeholders:
+### Placeholders:
 
 Gootstrap allows you to insert placeholders inside your templates in order to replace it with custom text. The built in placeholders are:
 
@@ -322,7 +322,7 @@ Gootstrap allows you to insert placeholders inside your templates in order to re
 - `{{.UserName}}`: Gets the user's computer name;
 - `{{.Date}}`: Gets the current date (YYYY-MM-DD).
 
-####Usage:
+#### Usage:
 
 ```toml
 # placeholder.toml
@@ -341,7 +341,7 @@ func Test(t *testing.T) {
 '''
 ```
 
-####Performing:
+#### Performing:
 
 ```bash
 $ gootstrap new place_holder --template /full/path/of/your/placeholder.toml 
@@ -359,7 +359,7 @@ $ gootstrap new place_holder --template /full/path/of/your/placeholder.toml
     |-- place_holder_test.go
 ```
 
-####Remote Templates:
+#### Remote Templates:
 
 Gootstrap also allows you to fetch templates from remote servers, passing its url as the argument for the `--template` flag:
 
@@ -402,5 +402,5 @@ For more info on TOML, be sure to check [https://github.com/toml-lang/toml](http
 
 Any bug or feedback, feel free to drop me a line :)
 
-##Licensing
+## Licensing
 This package is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
